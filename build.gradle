@@ -1,5 +1,5 @@
 group 'com.github.simonpercic.oklogweb'
-version '0.1.0'
+version VERSION_NAME
 
 buildscript {
     repositories {
@@ -19,7 +19,7 @@ mainClassName = "com.github.simonpercic.oklogweb.Application"
 
 jar {
     baseName = 'oklogweb'
-    version = '0.1.0'
+    version = VERSION_NAME
 }
 
 repositories {
