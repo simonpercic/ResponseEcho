@@ -14,7 +14,7 @@ import java.util.Base64;
 import java.util.zip.GZIPInputStream;
 
 /**
- * Created by simon on 30/09/15.
+ * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 @RestController
 public class MainController {

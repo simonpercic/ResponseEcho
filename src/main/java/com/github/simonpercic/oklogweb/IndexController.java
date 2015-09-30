@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Created by simon on 30/09/15.
+ * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 @RestController
 public class IndexController implements ErrorController {

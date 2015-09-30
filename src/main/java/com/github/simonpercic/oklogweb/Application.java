@@ -3,6 +3,9 @@ package com.github.simonpercic.oklogweb;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
+ */
 @SpringBootApplication
 public class Application {
 
