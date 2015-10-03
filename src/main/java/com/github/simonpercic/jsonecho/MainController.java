@@ -1,4 +1,4 @@
-package com.github.simonpercic.oklogweb;
+package com.github.simonpercic.jsonecho;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

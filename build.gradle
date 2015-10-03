@@ -1,4 +1,4 @@
-group 'com.github.simonpercic.oklogweb'
+group 'com.github.simonpercic.jsonecho'
 version VERSION_NAME
 
 buildscript {
@@ -15,10 +15,10 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
-mainClassName = "com.github.simonpercic.oklogweb.Application"
+mainClassName = "com.github.simonpercic.jsonecho.Application"
 
 jar {
-    baseName = 'oklogweb'
+    baseName = 'jsonecho'
     version = VERSION_NAME
 }
 
