@@ -15,7 +15,7 @@ cd JsonEcho
 
 ## Error handling
 
-Since it's meant to be used in conjunction with OkLog, there is no error handling. On (any) error, the app will do a HTTP redirect back to this page.
+Since JsonEcho is a development tool designed to be used in conjunction with OkLog, there is no error handling. On (any) error, the app will do a HTTP redirect back to this page.
 
 ## License
 
