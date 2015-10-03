@@ -1,4 +1,4 @@
-package com.github.simonpercic.jsonecho;
+package com.github.simonpercic.responseecho;
 
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;

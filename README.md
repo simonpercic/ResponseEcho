@@ -1,4 +1,4 @@
-# JsonEcho 
+# ResponseEcho
 
 Java Spring web app that gets a Base64 encoded and gzipped string param, decodes  and unpacks it and then echoes it back as a plain string. 
 
@@ -9,13 +9,13 @@ Used as a complementary web app for OkLog.
 ## Run
 
 ```
-cd JsonEcho
+cd ResponseEcho
 ./gradlew stage bootRun
 ```
 
 ## Error handling
 
-Since JsonEcho is a development tool designed to be used in conjunction with OkLog, there is no error handling. On (any) error, the app will do a HTTP redirect back to this page.
+Since ResponseEcho is a development tool designed to be used in conjunction with OkLog, there is no error handling. On (any) error, the app will do a HTTP redirect back to this page.
 
 ## License
 

@@ -1,4 +1,4 @@
-package com.github.simonpercic.jsonecho;
+package com.github.simonpercic.responseecho;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
