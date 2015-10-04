@@ -4,7 +4,7 @@ Java Spring web app that gets a Base64 encoded and gzipped string param, decodes
 
 ## Purpose
 
-Used as a complementary web app for OkLog.
+Used as a complementary web app for [OkLog](https://github.com/simonpercic/OkLog).
 
 ## Run
 
@@ -15,7 +15,7 @@ cd ResponseEcho
 
 ## Error handling
 
-Since ResponseEcho is a development tool designed to be used in conjunction with OkLog, there is no error handling. On (any) error, the app will do a HTTP redirect back to this page.
+Since ResponseEcho is a development tool designed to be used in conjunction with [OkLog](https://github.com/simonpercic/OkLog), there is no error handling. On (any) error, the app will do a HTTP redirect back to this page.
 
 ## License
 
