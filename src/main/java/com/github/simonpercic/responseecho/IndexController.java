@@ -15,7 +15,7 @@ public class IndexController implements ErrorController {
 
     @RequestMapping(value = PATH)
     public ModelAndView error() {
-        return new ModelAndView("redirect:" + "https://github.com/simonpercic");
+        return new ModelAndView("redirect:" + "https://github.com/simonpercic/ResponseEcho");
     }
 
     @Override
