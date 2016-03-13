@@ -32,6 +32,8 @@ targetCompatibility = 1.8
 dependencies {
     // Spring Framework
     compile 'org.springframework.boot:spring-boot-starter-web'
+
+    compile 'com.google.code.gson:gson:2.6.2'
 }
 
 task wrapper(type: Wrapper) {
