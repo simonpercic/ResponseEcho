@@ -1,11 +1,11 @@
 package com.github.simonpercic.responseecho;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +29,8 @@ public class MainController {
     private final Gson gson;
     private final JsonParser jsonParser;
 
-    @Autowired
-    public MainController(Gson gson) {
-        this.gson = gson;
+    public MainController() {
+        this.gson = new GsonBuilder().setPrettyPrinting().create();
         this.jsonParser = new JsonParser();
     }
 
@@ -68,7 +67,7 @@ public class MainController {
      * @param responseString response string
      * @return pretty-printed response string
      */
-    private String toPrettyFormat(String responseString) {
+    String toPrettyFormat(String responseString) {
         if (StringUtils.isEmpty(responseString)) {
             return "";
         }
