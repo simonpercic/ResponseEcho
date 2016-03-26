@@ -1,6 +1,6 @@
 # ResponseEcho
 
-Java Spring web app that gets a Base64 encoded and gzipped string param, decodes  and unpacks it and then echoes it back as a plain string. 
+Java Spring web app that gets a Base64 encoded and gzipped string param, decodes and unpacks it and then echoes it back as a plain string.
 
 ## Purpose
 
