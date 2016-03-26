@@ -1,5 +1,12 @@
 package com.github.simonpercic.responseecho;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +25,14 @@ import java.util.zip.GZIPInputStream;
  */
 @RestController
 public class MainController {
+
+    private final Gson gson;
+    private final JsonParser jsonParser;
+
+    public MainController() {
+        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.jsonParser = new JsonParser();
+    }
 
     @RequestMapping(value = "/re/{response}", method = RequestMethod.GET, produces = "application/json")
     public @ResponseBody String echoResponse(@PathVariable(value = "response") String response) throws IOException {
@@ -42,6 +57,26 @@ public class MainController {
         gzipInputStream.close();
         bis.close();
 
-        return sb.toString();
+        String json = sb.toString();
+        return toPrettyFormat(json);
+    }
+
+    /**
+     * Try to pretty-print the response string.
+     *
+     * @param responseString response string
+     * @return pretty-printed response string
+     */
+    String toPrettyFormat(String responseString) {
+        if (StringUtils.isEmpty(responseString)) {
+            return "";
+        }
+
+        try {
+            JsonElement jsonElement = jsonParser.parse(responseString);
+            return gson.toJson(jsonElement);
+        } catch (JsonSyntaxException e) {
+            return responseString;
+        }
     }
 }
