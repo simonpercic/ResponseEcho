@@ -1,20 +1,28 @@
 package com.github.simonpercic.responseecho;
 
+import com.github.simonpercic.responseecho.manager.analytics.AnalyticsManager;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
 
 /**
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
+@RunWith(MockitoJUnitRunner.class)
 public class MainControllerPrettyFormatTest {
+
+    @Mock AnalyticsManager analyticsManager;
 
     private MainController mainController;
 
     @Before
     public void setUp() throws Exception {
-        mainController = new MainController();
+        mainController = new MainController(analyticsManager);
     }
 
     @Test
