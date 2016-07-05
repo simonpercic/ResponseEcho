@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -x
+
+if [ ! -d $OPENSHIFT_DATA_DIR/jdk1.8.0_73 ]
+        then
+                cd $OPENSHIFT_DATA_DIR
+                wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u73-b02/jdk-8u73-linux-x64.tar.gz
+                tar xvf *.tar.gz
+                rm -f *.tar.gz
+fi
+
+if [ ! -d $OPENSHIFT_DATA_DIR/gradle-2.6 ]
+        then
+                cd $OPENSHIFT_DATA_DIR
+                wget https://services.gradle.org/distributions/gradle-2.6-bin.zip
+                unzip gradle-2.6-bin.zip
+                rm -f gradle-2.6-bin.zip
+fi
+
+if [ ! -d $OPENSHIFT_DATA_DIR/gradle ]
+        then
+                cd $OPENSHIFT_DATA_DIR
+				mkdir gradle
+fi
+
+cd $OPENSHIFT_REPO_DIR
+export GRADLE_USER_HOME=$OPENSHIFT_DATA_DIR/gradle
+export GRADLE_HOME=$OPENSHIFT_DATA_DIR/gradle-2.6
+export GRADLE_OPTS="-Xms384m -Xmx412m"
+export JAVA_HOME=$OPENSHIFT_DATA_DIR/jdk1.8.0_73
+export PATH=$JAVA_HOME/bin:$GRADLE_HOME/bin:$PATH
+
+gradle bootRepackage
