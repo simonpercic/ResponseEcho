@@ -29,14 +29,17 @@ repositories {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+ext.retrofitVersion = '2.1.0'
+
 dependencies {
     // Spring Framework
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
     compile 'org.webjars:bootstrap:3.3.6'
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.google.code.gson:gson:2.7'
+    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
     // Unit test dependencies
     testCompile 'junit:junit:4.12'
