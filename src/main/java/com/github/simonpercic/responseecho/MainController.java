@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 
@@ -36,5 +37,16 @@ import java.io.IOException;
         analyticsManager.sendPageView(BASE_ECHO_RESPONSE_PATH);
 
         return responseManager.decodeResponse(response);
+    }
+
+    @RequestMapping(value = Constants.V1 + "/r/{response}", method = RequestMethod.GET)
+    public ModelAndView responseInfo(@PathVariable(value = "response") String response) throws IOException {
+        ModelAndView mav = new ModelAndView("response");
+
+        mav.addObject("short_url", "http://www.google.com");
+        mav.addObject("response_body_url", String.format("%s%s/%s", Constants.V1, BASE_ECHO_RESPONSE_PATH, response));
+        mav.addObject("response_body", responseManager.decodeResponse(response));
+
+        return mav;
     }
 }
