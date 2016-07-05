@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
 @RunWith(MockitoJUnitRunner.class)
-public class MainControllerResponseTest {
+public class MainControllerResponseUnitTest {
 
     @Mock AnalyticsManager analyticsManager;
     @Mock ResponseManager responseManager;
