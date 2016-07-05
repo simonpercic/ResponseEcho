@@ -40,7 +40,7 @@ import java.io.IOException;
     }
 
     @RequestMapping(value = Constants.V1 + "/r/{response}", method = RequestMethod.GET)
-    public ModelAndView responseInfo(@PathVariable(value = "response") String response) throws IOException {
+    ModelAndView responseInfo(@PathVariable(value = "response") String response) throws IOException {
         ModelAndView mav = new ModelAndView("response");
 
         mav.addObject("short_url", "http://www.google.com");

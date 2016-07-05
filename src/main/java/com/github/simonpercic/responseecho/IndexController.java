@@ -1,25 +1,31 @@
 package com.github.simonpercic.responseecho;
 
-import org.springframework.boot.autoconfigure.web.ErrorController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-@RestController
-public class IndexController implements ErrorController {
+@ControllerAdvice
+public class IndexController {
 
-    private static final String PATH = "/error";
+    @ExceptionHandler(value = {Exception.class, RuntimeException.class})
+    public ModelAndView defaultErrorHandler(HttpServletRequest request, Exception e) {
+        ModelAndView mav = new ModelAndView("error");
 
-    @RequestMapping(value = PATH)
-    public ModelAndView error() {
-        return new ModelAndView("redirect:" + "https://github.com/simonpercic/ResponseEcho");
-    }
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        String stacktrace = sw.toString();
 
-    @Override
-    public String getErrorPath() {
-        return PATH;
+        mav.addObject("message", e.getMessage());
+        mav.addObject("stacktrace", stacktrace);
+
+        return mav;
     }
 }

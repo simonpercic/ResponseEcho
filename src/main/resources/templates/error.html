@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
-    <title>Response</title>
+    <title>Error</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.6/css/bootstrap.min.css"
           th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}"
@@ -13,13 +13,11 @@
 <body>
 
 <div class="container">
-    <h4>shorturl:
-        <small><a th:href="${short_url}" th:text="${short_url}"></a></small>
-    </h4>
+    <h3>Error</h3>
+    <h4 th:text="${message}"></h4>
+    <pre th:text="${stacktrace}" class="prettyprint lang-java pre-scrollable"></pre>
 
-    <h3>Response</h3>
-    <h4><a th:href="${response_body_url}">body</a></h4>
-    <pre th:text="${response_body}" class="prettyprint pre-scrollable"></pre>
+    <h5><a href="https://github.com/simonpercic/ResponseEcho">simonpercic/ResponseEcho</a></h5>
 </div>
 
 </body>
