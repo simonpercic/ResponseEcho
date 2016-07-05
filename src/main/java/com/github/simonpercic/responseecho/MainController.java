@@ -22,6 +22,8 @@ import java.io.IOException;
     private static final String BASE_ECHO_RESPONSE_PATH = "/re";
     private static final String ECHO_RESPONSE_PATH = BASE_ECHO_RESPONSE_PATH + "/{response}";
 
+    private static final String BASE_RESPONSE_INFO_PATH = "/r";
+
     private final ResponseManager responseManager;
     private final AnalyticsManager analyticsManager;
 
@@ -33,17 +35,21 @@ import java.io.IOException;
     @RequestMapping(value = {ECHO_RESPONSE_PATH, Constants.V1 + ECHO_RESPONSE_PATH},
             method = RequestMethod.GET,
             produces = "application/json")
-    @ResponseBody String echoResponse(@PathVariable(value = "response") String response) throws IOException {
+    @ResponseBody String echoResponse(@PathVariable("response") String response) throws IOException {
         analyticsManager.sendPageView(BASE_ECHO_RESPONSE_PATH);
 
         return responseManager.decodeResponse(response);
     }
 
-    @RequestMapping(value = Constants.V1 + "/r/{response}", method = RequestMethod.GET)
-    ModelAndView responseInfo(@PathVariable(value = "response") String response) throws IOException {
+    @RequestMapping(value = Constants.V1 + BASE_RESPONSE_INFO_PATH + "/{response}", method = RequestMethod.GET)
+    ModelAndView responseInfo(
+            @PathVariable("response") String response) throws IOException {
+
         ModelAndView mav = new ModelAndView("response");
 
-        mav.addObject("short_url", "http://www.google.com");
+        String infoUrl = String.format("%s%s/%s", Constants.V1, BASE_RESPONSE_INFO_PATH, response);
+
+        mav.addObject("info_url", infoUrl);
         mav.addObject("response_body_url", String.format("%s%s/%s", Constants.V1, BASE_ECHO_RESPONSE_PATH, response));
         mav.addObject("response_body", responseManager.decodeResponse(response));
 

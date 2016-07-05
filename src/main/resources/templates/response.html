@@ -9,13 +9,13 @@
 <body>
 
 <div class="container">
-    <h4>shorturl:
-        <small><a th:href="${short_url}" th:text="${short_url}"></a></small>
-    </h4>
-
     <h3>Response</h3>
     <h4><a th:href="${response_body_url}">body</a></h4>
     <pre th:text="${response_body}" class="prettyprint pre-scrollable"></pre>
+
+    <p class="url"><strong>url:</strong>
+        <a th:href="${info_url}" th:text="${info_url}"></a>
+    </p>
 </div>
 
 </body>
