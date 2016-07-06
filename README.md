@@ -15,10 +15,6 @@ cd ResponseEcho
 ./gradlew stage bootRun
 ```
 
-## Error handling
-
-Since ResponseEcho is a development tool designed to be used in conjunction with [OkLog](https://github.com/simonpercic/OkLog), there is no error handling. On (any) error, the app will do a HTTP redirect back to this page.
-
 ## License
 
 Open source, distributed under the MIT License. See [LICENSE](LICENSE) for details.
