@@ -42,9 +42,7 @@ import java.io.IOException;
     }
 
     @RequestMapping(value = Constants.V1 + BASE_RESPONSE_INFO_PATH + "/{response}", method = RequestMethod.GET)
-    ModelAndView responseInfo(
-            @PathVariable("response") String response) throws IOException {
-
+    ModelAndView responseInfo(@PathVariable("response") String response) throws IOException {
         ModelAndView mav = new ModelAndView("response");
 
         String infoUrl = String.format("%s%s/%s", Constants.V1, BASE_RESPONSE_INFO_PATH, response);
