@@ -15,6 +15,9 @@ cd ResponseEcho
 ./gradlew stage bootRun
 ```
 
+## Change Log
+See [CHANGELOG.md](CHANGELOG.md)
+
 ## License
 
 Open source, distributed under the MIT License. See [LICENSE](LICENSE) for details.
