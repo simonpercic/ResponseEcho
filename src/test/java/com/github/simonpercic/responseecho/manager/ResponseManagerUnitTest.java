@@ -102,6 +102,33 @@ public class ResponseManagerUnitTest {
     }
 
     @Test
+    public void testToPrettyFormatNullField() {
+        String input = "{\"id\":1,\"sample\":null,\"name\":\"Under the Dome\",\"runtime\":60," +
+                "\"rating\":{\"average\":\"6.7\"},\"network\":{\"id\":2,\"name\":\"CBS\"}," +
+                "\"image\":{\"medium\":\"http://example.com/1.jpg\"}}";
+
+        String output = responseManager.toPrettyFormat(input);
+        String expected = "{\n" +
+                "  \"id\": 1,\n" +
+                "  \"sample\": null,\n" +
+                "  \"name\": \"Under the Dome\",\n" +
+                "  \"runtime\": 60,\n" +
+                "  \"rating\": {\n" +
+                "    \"average\": \"6.7\"\n" +
+                "  },\n" +
+                "  \"network\": {\n" +
+                "    \"id\": 2,\n" +
+                "    \"name\": \"CBS\"\n" +
+                "  },\n" +
+                "  \"image\": {\n" +
+                "    \"medium\": \"http://example.com/1.jpg\"\n" +
+                "  }\n" +
+                "}";
+
+        assertEquals(expected, output);
+    }
+
+    @Test
     public void testToPrettyFormatEmpty() {
         assertEquals("", responseManager.toPrettyFormat(null));
         assertEquals("", responseManager.toPrettyFormat(""));
