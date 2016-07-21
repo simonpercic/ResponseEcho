@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.0.1 *(2016-07-21)*
+----------------------------
+
+ * New: JSON - enabled showing fields with null values when pretty-printing.
+
+
 Version 1.0.0 *(2016-07-19)*
 ----------------------------
 
