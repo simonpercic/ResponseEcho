@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
     private final GoogleUrlShortenerApiService apiService;
 
     @Autowired public UrlShortenerManager(Environment environment) {
-        googleApiKey = environment.getProperty("googleShortener.apiKey");
+        googleApiKey = environment.getProperty("GOOGLE_SHORTENER_API_KEY");
 
         apiService = new Retrofit.Builder()
                 .baseUrl("https://www.googleapis.com/urlshortener/v1/")
