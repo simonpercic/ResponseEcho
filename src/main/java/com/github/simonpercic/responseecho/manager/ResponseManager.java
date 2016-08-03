@@ -26,7 +26,7 @@ public class ResponseManager {
     private final JsonParser jsonParser;
 
     ResponseManager() {
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
         this.jsonParser = new JsonParser();
     }
 
