@@ -1,9 +1,15 @@
 package com.github.simonpercic.responseecho.manager;
 
+import com.github.simonpercic.oklog.shared.data.BodyState;
+import com.github.simonpercic.oklog.shared.data.HeaderData;
+import com.github.simonpercic.oklog.shared.data.LogData;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
@@ -139,5 +145,56 @@ public class ResponseManagerUnitTest {
         String input = "Not a json";
 
         assertEquals(input, responseManager.toPrettyJsonFormat(input));
+    }
+
+    @Test
+    public void testParseLogDataEmpty() throws Exception {
+        LogData logData = responseManager.parseLogData("");
+        assertNull(logData);
+    }
+
+    @Test
+    public void testParseLogData() throws Exception {
+        String logDataString = "H4sIAAAAAAAAAJ2Rz27TQBDGSYwKXXGo9gARpMISQkLIG69T8qc5YTlWW9HEUbKgHlmvN8lunV3L3jrNlbfiD" +
+                "TjlmdgUiQPqicPMZX7zzcw3wLmICeytjSlGvl-UoqaGo3SQsk_I1NVabytaiI4NWu7QRrPbDtMb_6Hw-vmhzQ86wYe9M2x-fnL5q" +
+                "zFvJl9ufj77vnfkCTha8LLmJTyK9DbVO9kCINJKcWaEVhDccl4gmouay7egdYPCP0PmdoNcbIRB14cMnaCL5TvQfgSY8w0VSqiVh" +
+                "YJz6YIXVt9wZRDZFRye0KLIBaOHcb6stLLEm5AxXlXoAJY6R2Ge6y1KSrESCjY-yiloP0pMuFnrrIKdZEaukunCs755l3E49mbJg" +
+                "nizr8Qbx9cxiT0yD6PYi5LpNI6IbIOX_-hN6D0KVxw2AyzPwKu_Z5GSqoo-eIOuMtjqDZa9ZZYGwTDr0nOcYrzsZn2Wyffg6dhaA" +
+                "E_J-s5zcd9NmHG7OOi7eDA6w6Pe0L2YEOu_801QeGz_49Z8dVcWjfu986Pxf8_-DXy6JbEpAgAA";
+
+        LogData logData = responseManager.parseLogData(logDataString);
+        assertEquals("GET", logData.request_method);
+        assertEquals("http://private-b7bc4-tvshowsapi.apiary-mock.com/shows", logData.request_url);
+        assertEquals("http/1.1", logData.protocol);
+        assertEquals((Long) 462L, logData.request_content_length);
+        assertEquals(BodyState.NO_BODY, logData.request_body_state);
+        assertEquals(false, logData.request_failed);
+        assertEquals((Integer) 200, logData.response_code);
+        assertEquals("OK", logData.response_message);
+        assertEquals((Long) 953L, logData.response_duration_ms);
+        assertEquals((Long) 462L, logData.response_content_length);
+        assertEquals(0, logData.request_headers.size());
+        assertEquals(11, logData.response_headers.size());
+        assertHeader("Server", "Cowboy", logData.response_headers.get(0));
+        assertHeader("Connection", "keep-alive", logData.response_headers.get(1));
+        assertHeader("X-Apiary-Ratelimit-Limit", "120", logData.response_headers.get(2));
+        assertHeader("X-Apiary-Ratelimit-Remaining", "119", logData.response_headers.get(3));
+        assertHeader("Content-Type", "application/json", logData.response_headers.get(4));
+        assertHeader("Access-Control-Allow-Origin", "*", logData.response_headers.get(5));
+        assertHeader("Access-Control-Allow-Methods", "OPTIONS,GET,HEAD,POST,PUT,DELETE,TRACE,CONNECT",
+                logData.response_headers.get(6));
+        assertHeader("Access-Control-Max-Age", "10", logData.response_headers.get(7));
+        assertHeader("X-Apiary-Transaction-Id", "57f5fdb118d2a90b00f2d6cd", logData.response_headers.get(8));
+        assertHeader("Date", "Thu, 06 Oct 2016 07:30:58 GMT", logData.response_headers.get(9));
+        assertHeader("Via", "1.1 vegur", logData.response_headers.get(10));
+        assertEquals(BodyState.PLAIN_BODY, logData.response_body_state);
+        assertEquals((Long) 462L, logData.response_body_size);
+        assertEquals("http://private-b7bc4-tvshowsapi.apiary-mock.com/shows", logData.response_url);
+    }
+
+    private static void assertHeader(String name, String value, HeaderData headerData) {
+        assertNotNull(headerData);
+        assertEquals(name, headerData.name);
+        assertEquals(value, headerData.value);
     }
 }

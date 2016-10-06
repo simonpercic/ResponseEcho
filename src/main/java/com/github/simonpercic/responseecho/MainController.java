@@ -93,9 +93,11 @@ import okhttp3.HttpUrl;
                 .addEncodedPathSegment(response)
                 .build();
 
+        String responseBody = "0".equals(response) ? null : responseManager.decodeResponse(response);
+
         mav.addObject("info_url", infoUrl.toString());
         mav.addObject("response_body_url", responseBodyUrl.toString());
-        mav.addObject("response_body", responseManager.decodeResponse(response));
+        mav.addObject("response_body", responseBody);
 
         LogData logData = responseManager.parseLogData(logDataString);
         if (logData != null) {
