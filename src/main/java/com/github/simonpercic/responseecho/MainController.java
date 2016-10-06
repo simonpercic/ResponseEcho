@@ -1,11 +1,13 @@
 package com.github.simonpercic.responseecho;
 
+import com.github.simonpercic.oklog.shared.data.LogData;
 import com.github.simonpercic.responseecho.config.Constants;
 import com.github.simonpercic.responseecho.manager.ResponseManager;
 import com.github.simonpercic.responseecho.manager.analytics.AnalyticsManager;
 import com.github.simonpercic.responseecho.manager.urlshortener.UrlShortenerManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +34,7 @@ import okhttp3.HttpUrl;
     private static final String RESPONSE_ECHO_URL = "/" + Constants.V1 + RESPONSE_ECHO_LEGACY_URL;
     private static final String RESPONSE_INFO_URL = "/" + Constants.V1 + "/" + RESPONSE_INFO + "/{response}";
 
+    private static final String Q_DATA = "d";
     private static final String Q_SHORTEN_URL = "short";
 
     private final ResponseManager responseManager;
@@ -58,12 +61,20 @@ import okhttp3.HttpUrl;
     ModelAndView responseInfo(
             HttpServletRequest request,
             @PathVariable("response") String response,
-            @RequestParam(value = Q_SHORTEN_URL, required = false) boolean shortenUrl) throws IOException {
+            @RequestParam(value = Q_DATA, required = false) String logDataString,
+            @RequestParam(value = Q_SHORTEN_URL, required = false) boolean shortenUrl)
+            throws IOException {
 
-        HttpUrl infoUrl = requestHttpUrl(request)
+        HttpUrl.Builder infoUrlBuilder = requestHttpUrl(request)
                 .addPathSegment(Constants.V1)
                 .addPathSegment(RESPONSE_INFO)
-                .addEncodedPathSegment(response)
+                .addEncodedPathSegment(response);
+
+        if (!StringUtils.isEmpty(logDataString)) {
+            infoUrlBuilder.addEncodedQueryParameter(Q_DATA, logDataString);
+        }
+
+        HttpUrl infoUrl = infoUrlBuilder
                 .addEncodedQueryParameter(Q_SHORTEN_URL, String.valueOf(shortenUrl))
                 .build();
 
@@ -85,6 +96,13 @@ import okhttp3.HttpUrl;
         mav.addObject("info_url", infoUrl.toString());
         mav.addObject("response_body_url", responseBodyUrl.toString());
         mav.addObject("response_body", responseManager.decodeResponse(response));
+
+        LogData logData = responseManager.parseLogData(logDataString);
+        if (logData != null) {
+            mav.addObject("data_request_method", logData.request_method);
+            mav.addObject("data_request_url", logData.request_url);
+            mav.addObject("data_protocol", logData.protocol);
+        }
 
         return mav;
     }

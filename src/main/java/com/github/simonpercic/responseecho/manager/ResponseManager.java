@@ -1,11 +1,14 @@
 package com.github.simonpercic.responseecho.manager;
 
+import com.github.simonpercic.oklog.shared.LogDataSerializer;
+import com.github.simonpercic.oklog.shared.data.LogData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -53,17 +56,30 @@ public class ResponseManager {
         bis.close();
 
         String json = sb.toString();
+        return toPrettyJsonFormat(json);
+    }
 
-        return toPrettyFormat(json);
+    public LogData parseLogData(String logDataUrl) throws IOException {
+        if (StringUtils.isEmpty(logDataUrl)) {
+            return null;
+        }
+
+        byte[] bytes = Base64.getUrlDecoder().decode(logDataUrl);
+
+        ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
+        GZIPInputStream gzipInputStream = new GZIPInputStream(bis);
+        byte[] logData = IOUtils.toByteArray(gzipInputStream);
+
+        return LogDataSerializer.deserialize(logData);
     }
 
     /**
-     * Try to pretty-print the response string.
+     * Try to pretty-print the response string, if JSON.
      *
      * @param responseString response string
      * @return pretty-printed response string
      */
-    String toPrettyFormat(String responseString) {
+    String toPrettyJsonFormat(String responseString) {
         if (StringUtils.isEmpty(responseString)) {
             return "";
         }

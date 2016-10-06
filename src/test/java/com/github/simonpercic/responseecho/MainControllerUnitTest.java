@@ -63,7 +63,7 @@ public class MainControllerUnitTest {
 
         HttpServletRequest request = mockRequest("http", "localhost", 8080);
 
-        ModelAndView mav = mainController.responseInfo(request, response, false);
+        ModelAndView mav = mainController.responseInfo(request, response, null, false);
         assertEquals("response", mav.getViewName());
 
         Map<String, Object> model = mav.getModel();
@@ -96,7 +96,7 @@ public class MainControllerUnitTest {
 
         HttpServletRequest request = mockRequest("http", "localhost", 8080);
 
-        ModelAndView mav = mainController.responseInfo(request, response, true);
+        ModelAndView mav = mainController.responseInfo(request, response, null, true);
 
         verify(urlShortenerManager).shorten(eq(longUrl));
 
@@ -125,7 +125,7 @@ public class MainControllerUnitTest {
 
         HttpServletRequest request = mockRequest("http", "localhost", 8080);
 
-        ModelAndView mav = mainController.responseInfo(request, response, true);
+        ModelAndView mav = mainController.responseInfo(request, response, null, true);
 
         verify(urlShortenerManager).shorten(eq(longUrl));
 

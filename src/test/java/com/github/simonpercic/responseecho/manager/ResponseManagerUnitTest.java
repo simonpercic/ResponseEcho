@@ -62,7 +62,7 @@ public class ResponseManagerUnitTest {
         String input = "{\"id\":1,\"name\":\"Under the Dome\",\"runtime\":60,\"rating\":{\"average\":\"6.7\"}," +
                 "\"network\":{\"id\":2,\"name\":\"CBS\"},\"image\":{\"medium\":\"http://example.com/1.jpg\"}}";
 
-        String output = responseManager.toPrettyFormat(input);
+        String output = responseManager.toPrettyJsonFormat(input);
         String expected = "{\n" +
                 "  \"id\": 1,\n" +
                 "  \"name\": \"Under the Dome\",\n" +
@@ -86,7 +86,7 @@ public class ResponseManagerUnitTest {
     public void testToPrettyFormatJsonArray() {
         String input = "[{\"id\":1,\"name\":\"Under the Dome\"},{\"id\":2,\"name\":\"True Detective\"}]";
 
-        String output = responseManager.toPrettyFormat(input);
+        String output = responseManager.toPrettyJsonFormat(input);
         String expected = "[\n" +
                 "  {\n" +
                 "    \"id\": 1,\n" +
@@ -107,7 +107,7 @@ public class ResponseManagerUnitTest {
                 "\"rating\":{\"average\":\"6.7\"},\"network\":{\"id\":2,\"name\":\"CBS\"}," +
                 "\"image\":{\"medium\":\"http://example.com/1.jpg\"}}";
 
-        String output = responseManager.toPrettyFormat(input);
+        String output = responseManager.toPrettyJsonFormat(input);
         String expected = "{\n" +
                 "  \"id\": 1,\n" +
                 "  \"sample\": null,\n" +
@@ -130,14 +130,14 @@ public class ResponseManagerUnitTest {
 
     @Test
     public void testToPrettyFormatEmpty() {
-        assertEquals("", responseManager.toPrettyFormat(null));
-        assertEquals("", responseManager.toPrettyFormat(""));
+        assertEquals("", responseManager.toPrettyJsonFormat(null));
+        assertEquals("", responseManager.toPrettyJsonFormat(""));
     }
 
     @Test
     public void testToPrettyFormatNotJson() {
         String input = "Not a json";
 
-        assertEquals(input, responseManager.toPrettyFormat(input));
+        assertEquals(input, responseManager.toPrettyJsonFormat(input));
     }
 }
