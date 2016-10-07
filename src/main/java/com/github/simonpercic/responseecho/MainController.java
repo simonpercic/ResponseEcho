@@ -1,5 +1,6 @@
 package com.github.simonpercic.responseecho;
 
+import com.github.simonpercic.oklog.shared.SharedConstants;
 import com.github.simonpercic.oklog.shared.data.BodyState;
 import com.github.simonpercic.oklog.shared.data.LogData;
 import com.github.simonpercic.responseecho.config.Constants;
@@ -94,7 +95,9 @@ import okhttp3.HttpUrl;
                 .addEncodedPathSegment(response)
                 .build();
 
-        String responseBody = "0".equals(response) ? null : responseManager.decodeResponse(response);
+        String responseBody = SharedConstants.EMPTY_RESPONSE_BODY.equals(response)
+                ? null
+                : responseManager.decodeResponse(response);
 
         mav.addObject("info_url", infoUrl.toString());
         mav.addObject("response_body_url", responseBodyUrl.toString());
