@@ -76,11 +76,14 @@
 
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade in active" id="responseBody">
-                    <h4 th:text="${data_response_body_state != null} ? ${data_response_body_state}"></h4>
-
                     <div th:if="${response_body != null}">
+                        <h4 th:text="${data_response_body_state != null} ? ${data_response_body_state}"></h4>
                         <h4><a th:href="${response_body_url}">show plain response</a></h4>
                         <pre th:text="${response_body}" class="prettyprint pre-scrollable"></pre>
+                    </div>
+
+                    <div th:unless="${response_body != null}">
+                        <h4>Empty body</h4>
                     </div>
                 </div>
 
