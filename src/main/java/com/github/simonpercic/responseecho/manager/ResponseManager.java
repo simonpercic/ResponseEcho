@@ -33,8 +33,8 @@ public class ResponseManager {
         this.jsonParser = new JsonParser();
     }
 
-    public String decodeResponse(String response) throws IOException {
-        if (response == null) {
+    public String decodeBody(String response) throws IOException {
+        if (StringUtils.isEmpty(response)) {
             return "";
         }
 

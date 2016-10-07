@@ -41,10 +41,7 @@
             <hr/>
 
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade in active" id="requestBody">
-                    <h4 th:text="${data_request_body_state != null} ? ${data_request_body_state}"></h4>
-                </div>
-
+                <div th:replace="fragments/network_body :: body (body_field=${request_body}, body_state=${data_request_body_state}, body_url=${request_body_url}, id='requestBody')"></div>
                 <div th:replace="fragments/network_headers_list :: headers (data_field=${data_request_headers}, id='requestHeaders')"></div>
             </div>
         </div>
@@ -75,18 +72,7 @@
             <hr/>
 
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade in active" id="responseBody">
-                    <div th:if="${response_body != null}">
-                        <h4 th:text="${data_response_body_state != null} ? ${data_response_body_state}"></h4>
-                        <h4><a th:href="${response_body_url}">show plain response</a></h4>
-                        <pre th:text="${response_body}" class="prettyprint pre-scrollable"></pre>
-                    </div>
-
-                    <div th:unless="${response_body != null}">
-                        <h4>Empty body</h4>
-                    </div>
-                </div>
-
+                <div th:replace="fragments/network_body :: body (body_field=${response_body}, body_state=${data_response_body_state}, body_url=${response_body_url}, id='responseBody')"></div>
                 <div th:replace="fragments/network_headers_list :: headers (data_field=${data_response_headers}, id='responseHeaders')"></div>
             </div>
         </div>

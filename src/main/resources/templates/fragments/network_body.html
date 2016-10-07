@@ -1,0 +1,13 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="body (body_field, body_state, body_url, id)" role="tabpanel"
+     class="tab-pane fade in active" th:id="${id}">
+
+    <div th:if="${body_field != null}">
+        <h4 th:text="${body_state != null} ? ${body_state}"></h4>
+        <h4><a th:href="${body_url}">show plain body</a></h4>
+        <pre th:text="${body_field}" class="prettyprint pre-scrollable"></pre>
+    </div>
+
+    <div th:unless="${body_field != null}">
+        <h4>No body</h4>
+    </div>
+</div>

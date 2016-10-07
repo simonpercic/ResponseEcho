@@ -36,7 +36,6 @@ import okhttp3.HttpUrl;
     private static final String RESPONSE_ECHO_URL = "/" + Constants.V1 + RESPONSE_ECHO_LEGACY_URL;
     private static final String RESPONSE_INFO_URL = "/" + Constants.V1 + "/" + RESPONSE_INFO + "/{response}";
 
-    private static final String Q_DATA = "d";
     private static final String Q_SHORTEN_URL = "short";
 
     private final ResponseManager responseManager;
@@ -56,24 +55,29 @@ import okhttp3.HttpUrl;
     @ResponseBody String echoResponse(@PathVariable("response") String response) throws IOException {
         analyticsManager.sendPageView("/" + RESPONSE_ECHO);
 
-        return responseManager.decodeResponse(response);
+        return responseManager.decodeBody(response);
     }
 
     @RequestMapping(value = RESPONSE_INFO_URL, method = RequestMethod.GET)
     ModelAndView responseInfo(
             HttpServletRequest request,
-            @PathVariable("response") String response,
-            @RequestParam(value = Q_DATA, required = false) String logDataString,
+            @PathVariable("response") String responseBodyString,
+            @RequestParam(value = SharedConstants.QUERY_PARAM_REQUEST_BODY, required = false) String requestBodyString,
+            @RequestParam(value = SharedConstants.QUERY_PARAM_DATA, required = false) String logDataString,
             @RequestParam(value = Q_SHORTEN_URL, required = false) boolean shortenUrl)
             throws IOException {
 
         HttpUrl.Builder infoUrlBuilder = requestHttpUrl(request)
                 .addPathSegment(Constants.V1)
                 .addPathSegment(RESPONSE_INFO)
-                .addEncodedPathSegment(response);
+                .addEncodedPathSegment(responseBodyString);
+
+        if (!StringUtils.isEmpty(requestBodyString)) {
+            infoUrlBuilder.addEncodedQueryParameter(SharedConstants.QUERY_PARAM_REQUEST_BODY, requestBodyString);
+        }
 
         if (!StringUtils.isEmpty(logDataString)) {
-            infoUrlBuilder.addEncodedQueryParameter(Q_DATA, logDataString);
+            infoUrlBuilder.addEncodedQueryParameter(SharedConstants.QUERY_PARAM_DATA, logDataString);
         }
 
         HttpUrl infoUrl = infoUrlBuilder
@@ -92,16 +96,31 @@ import okhttp3.HttpUrl;
         HttpUrl responseBodyUrl = requestHttpUrl(request)
                 .addPathSegment(Constants.V1)
                 .addPathSegment(RESPONSE_ECHO)
-                .addEncodedPathSegment(response)
+                .addEncodedPathSegment(responseBodyString)
                 .build();
 
-        String responseBody = SharedConstants.EMPTY_RESPONSE_BODY.equals(response)
+        String responseBody = SharedConstants.EMPTY_RESPONSE_BODY.equals(responseBodyString)
                 ? null
-                : responseManager.decodeResponse(response);
+                : responseManager.decodeBody(responseBodyString);
+
+        String requestBody = null;
+        String requestBodyUrl = null;
+        if (!StringUtils.isEmpty(requestBodyString)) {
+            requestBody = responseManager.decodeBody(requestBodyString);
+
+            requestBodyUrl = requestHttpUrl(request)
+                    .addPathSegment(Constants.V1)
+                    .addPathSegment(RESPONSE_ECHO)
+                    .addEncodedPathSegment(requestBodyString)
+                    .build()
+                    .toString();
+        }
 
         mav.addObject("info_url", infoUrl.toString());
         mav.addObject("response_body_url", responseBodyUrl.toString());
         mav.addObject("response_body", responseBody);
+        mav.addObject("request_body_url", requestBodyUrl);
+        mav.addObject("request_body", requestBody);
 
         LogData logData = responseManager.parseLogData(logDataString);
         if (logData != null) {

@@ -31,7 +31,7 @@ public class ResponseManagerUnitTest {
                 "  \"result\": false\n" +
                 "}";
 
-        assertEquals(response, responseManager.decodeResponse(request));
+        assertEquals(response, responseManager.decodeBody(request));
     }
 
     @Test
@@ -60,7 +60,7 @@ public class ResponseManagerUnitTest {
                 "  \"airtime\": \"22:00\"\n" +
                 "}";
 
-        assertEquals(response, responseManager.decodeResponse(request));
+        assertEquals(response, responseManager.decodeBody(request));
     }
 
     @Test

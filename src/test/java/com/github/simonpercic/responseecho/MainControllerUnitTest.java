@@ -52,7 +52,7 @@ public class MainControllerUnitTest {
         String response = "response";
         String decodedResponse = "decodedResponse";
 
-        when(responseManager.decodeResponse(eq(response))).thenReturn(decodedResponse);
+        when(responseManager.decodeBody(eq(response))).thenReturn(decodedResponse);
 
         String result = mainController.echoResponse(response);
         assertEquals(decodedResponse, result);
@@ -65,18 +65,19 @@ public class MainControllerUnitTest {
         String response = "response";
         String decodedResponse = "decodedResponse";
 
-        when(responseManager.decodeResponse(eq(response))).thenReturn(decodedResponse);
+        when(responseManager.decodeBody(eq(response))).thenReturn(decodedResponse);
 
         HttpServletRequest request = mockRequest("http", "localhost", 8080);
 
-        ModelAndView mav = mainController.responseInfo(request, response, null, false);
+        ModelAndView mav = mainController.responseInfo(request, response, null, null, false);
         assertEquals("response", mav.getViewName());
 
         Map<String, Object> model = mav.getModel();
-        assertEquals(3, model.size());
+        assertEquals(5, model.size());
         assertEquals("http://localhost:8080/v1/r/" + response + "?short=false", model.get("info_url"));
         assertEquals("http://localhost:8080/v1/re/" + response, model.get("response_body_url"));
         assertEquals(decodedResponse, model.get("response_body"));
+        assertEquals(null, model.get("request_body"));
     }
 
     @Test
@@ -85,22 +86,28 @@ public class MainControllerUnitTest {
 
         HttpServletRequest request = mockRequest("http", "localhost", 8080);
 
-        ModelAndView mav = mainController.responseInfo(request, response, null, false);
+        ModelAndView mav = mainController.responseInfo(request, response, null, null, false);
         assertEquals("response", mav.getViewName());
 
         Map<String, Object> model = mav.getModel();
-        assertEquals(3, model.size());
+        assertEquals(5, model.size());
         assertEquals("http://localhost:8080/v1/r/" + response + "?short=false", model.get("info_url"));
         assertEquals("http://localhost:8080/v1/re/" + response, model.get("response_body_url"));
         assertEquals(null, model.get("response_body"));
+        assertEquals(null, model.get("request_body"));
     }
 
     @Test
     public void testResponseInfoLogData() throws Exception {
-        String response = "response";
-        String decodedResponse = "decodedResponse";
+        String responseBody = "response_body";
+        String decodedResponse = "decoded_response_body";
 
-        when(responseManager.decodeResponse(eq(response))).thenReturn(decodedResponse);
+        when(responseManager.decodeBody(eq(responseBody))).thenReturn(decodedResponse);
+
+        String requestBody = "request_body";
+        String decodedRequestBody = "decoded_request_body";
+
+        when(responseManager.decodeBody(eq(requestBody))).thenReturn(decodedRequestBody);
 
         String logDataString = "log_data_string";
 
@@ -118,16 +125,19 @@ public class MainControllerUnitTest {
 
         HttpServletRequest request = mockRequest("http", "localhost", 8080);
 
-        ModelAndView mav = mainController.responseInfo(request, response, logDataString, false);
+        ModelAndView mav = mainController.responseInfo(request, responseBody, requestBody, logDataString, false);
         assertEquals("response", mav.getViewName());
 
         Map<String, Object> model = mav.getModel();
-        assertEquals(12, model.size());
-        assertEquals("http://localhost:8080/v1/r/" + response + "?d=" + logDataString + "&short=false",
+        assertEquals(14, model.size());
+        assertEquals(
+                "http://localhost:8080/v1/r/" + responseBody + "?qb=" + requestBody + "&d=" + logDataString + "&short=false",
                 model.get("info_url"));
 
-        assertEquals("http://localhost:8080/v1/re/" + response, model.get("response_body_url"));
+        assertEquals("http://localhost:8080/v1/re/" + responseBody, model.get("response_body_url"));
         assertEquals(decodedResponse, model.get("response_body"));
+        assertEquals("http://localhost:8080/v1/re/" + requestBody, model.get("request_body_url"));
+        assertEquals(decodedRequestBody, model.get("request_body"));
         assertEquals("request_method", model.get("data_request_method"));
         assertEquals("request_url", model.get("data_request_url"));
         assertEquals("protocol", model.get("data_protocol"));
@@ -166,15 +176,15 @@ public class MainControllerUnitTest {
         String response = "response";
         String decodedResponse = "decodedResponse";
 
-        when(responseManager.decodeResponse(eq(response))).thenReturn(decodedResponse);
+        when(responseManager.decodeBody(eq(response))).thenReturn(decodedResponse);
 
         HttpServletRequest request = mockRequest("http", "localhost", 8080);
 
-        ModelAndView mav = mainController.responseInfo(request, response, null, false);
+        ModelAndView mav = mainController.responseInfo(request, response, null, null, false);
         assertEquals("response", mav.getViewName());
 
         Map<String, Object> model = mav.getModel();
-        assertEquals(3, model.size());
+        assertEquals(5, model.size());
         assertEquals("http://localhost:8080/v1/r/" + response + "?short=false", model.get("info_url"));
         assertEquals("http://localhost:8080/v1/re/" + response, model.get("response_body_url"));
         assertEquals(decodedResponse, model.get("response_body"));
@@ -187,7 +197,7 @@ public class MainControllerUnitTest {
         String response = "response";
         String decodedResponse = "decodedResponse";
 
-        when(responseManager.decodeResponse(eq(response))).thenReturn(decodedResponse);
+        when(responseManager.decodeBody(eq(response))).thenReturn(decodedResponse);
 
         HttpUrl longUrl = new HttpUrl.Builder()
                 .scheme("http")
@@ -204,12 +214,12 @@ public class MainControllerUnitTest {
 
         HttpServletRequest request = mockRequest("http", "localhost", 8080);
 
-        ModelAndView mav = mainController.responseInfo(request, response, null, true);
+        ModelAndView mav = mainController.responseInfo(request, response, null, null, true);
 
         verify(urlShortenerManager).shorten(eq(longUrl));
 
         Map<String, Object> model = mav.getModel();
-        assertEquals(3, model.size());
+        assertEquals(5, model.size());
         assertEquals(shortUrl, model.get("info_url"));
     }
 
@@ -218,7 +228,7 @@ public class MainControllerUnitTest {
         String response = "response";
         String decodedResponse = "decodedResponse";
 
-        when(responseManager.decodeResponse(eq(response))).thenReturn(decodedResponse);
+        when(responseManager.decodeBody(eq(response))).thenReturn(decodedResponse);
 
         HttpUrl longUrl = new HttpUrl.Builder()
                 .scheme("http")
@@ -234,12 +244,12 @@ public class MainControllerUnitTest {
 
         HttpServletRequest request = mockRequest("http", "localhost", 8080);
 
-        ModelAndView mav = mainController.responseInfo(request, response, null, true);
+        ModelAndView mav = mainController.responseInfo(request, response, null, null, true);
 
         verify(urlShortenerManager).shorten(eq(longUrl));
 
         Map<String, Object> model = mav.getModel();
-        assertEquals(3, model.size());
+        assertEquals(5, model.size());
         assertEquals(longUrl.toString(), model.get("info_url"));
     }
 
