@@ -44,25 +44,8 @@
                 <div role="tabpanel" class="tab-pane fade in active" id="requestBody">
                     <h4 th:text="${data_request_body_state != null} ? ${data_request_body_state}"></h4>
                 </div>
-                <div role="tabpanel" class="tab-pane fade" id="requestHeaders">
-                    <table th:if="${not #lists.isEmpty(data_request_headers)}" class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Value</th>
-                        </tr>
-                        </thead>
 
-                        <tbody>
-                        <tr th:each="header,itrStat : ${data_request_headers}">
-                            <td th:text="${itrStat.index + 1}"></td>
-                            <td th:text="${header.name}"></td>
-                            <td th:text="${header.value}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <div th:replace="fragments/network_headers_list :: headers (data_field=${data_request_headers}, id='requestHeaders')"></div>
             </div>
         </div>
     </div>
@@ -100,25 +83,8 @@
                         <pre th:text="${response_body}" class="prettyprint pre-scrollable"></pre>
                     </div>
                 </div>
-                <div role="tabpanel" class="tab-pane fade" id="responseHeaders">
-                    <table th:if="${not #lists.isEmpty(data_response_headers)}" class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Value</th>
-                        </tr>
-                        </thead>
 
-                        <tbody>
-                        <tr th:each="header,itrStat : ${data_response_headers}">
-                            <td th:text="${itrStat.index + 1}"></td>
-                            <td th:text="${header.name}"></td>
-                            <td th:text="${header.value}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <div th:replace="fragments/network_headers_list :: headers (data_field=${data_response_headers}, id='responseHeaders')"></div>
             </div>
         </div>
     </div>

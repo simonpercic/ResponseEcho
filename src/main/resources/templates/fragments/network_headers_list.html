@@ -1,0 +1,21 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="headers (data_field, id)" role="tabpanel" class="tab-pane fade"
+     th:id="${id}">
+
+    <table th:if="${not #lists.isEmpty(data_field)}" class="table table-hover">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="header,itrStat : ${data_field}">
+            <td th:text="${itrStat.index + 1}"></td>
+            <td th:text="${header.name}"></td>
+            <td th:text="${header.value}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
