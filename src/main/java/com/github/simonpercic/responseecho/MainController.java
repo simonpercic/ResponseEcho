@@ -108,7 +108,7 @@ import okhttp3.HttpUrl;
             mav.addObject("data_request_content_type", logData.request_content_type);
             mav.addObject("data_request_content_length", logData.request_content_length);
             mav.addObject("data_request_body_state", displayBodyState(logData.request_body_state));
-            mav.addObject("data_request_headers", logData.response_headers);
+            mav.addObject("data_request_headers", logData.request_headers);
         }
 
         return mav;
