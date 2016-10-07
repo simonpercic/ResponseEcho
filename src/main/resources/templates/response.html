@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
-    <title>Response info</title>
+    <title>ResponseEcho</title>
     <object th:replace="base_head :: head"></object>
 </head>
 
@@ -67,15 +67,60 @@
         </div>
     </div>
 
-    <h3>Response</h3>
+    <hr/>
 
-    <div th:if="${response_body != null}">
-        <h4><a th:href="${response_body_url}">body</a></h4>
-        <pre th:text="${response_body}" class="prettyprint pre-scrollable"></pre>
-    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Response</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="nav nav-pills" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#responseBody" aria-controls="responseBody" role="tab" data-toggle="tab">
+                        Body
+                    </a>
+                </li>
+                <li role="presentation">
+                    <a href="#responseHeaders" aria-controls="responseHeaders" role="tab" data-toggle="tab">
+                        Headers
+                        <span th:text="${not #lists.isEmpty(data_response_headers)} ? ${#lists.size(data_response_headers)} : '0'"
+                              class="badge"></span>
+                    </a>
+                </li>
+            </ul>
 
-    <div th:unless="${response_body != null}">
-        <h4>No response body</h4>
+            <hr/>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="responseBody">
+                    <h4 th:text="${data_response_body_state != null} ? ${data_response_body_state}"></h4>
+
+                    <div th:if="${response_body != null}">
+                        <h4><a th:href="${response_body_url}">show plain body response</a></h4>
+                        <pre th:text="${response_body}" class="prettyprint pre-scrollable"></pre>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="responseHeaders">
+                    <table th:if="${not #lists.isEmpty(data_response_headers)}" class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="header,itrStat : ${data_response_headers}">
+                            <td th:text="${itrStat.index + 1}"></td>
+                            <td th:text="${header.name}"></td>
+                            <td th:text="${header.value}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
     <p class="url"><strong>url:</strong>
