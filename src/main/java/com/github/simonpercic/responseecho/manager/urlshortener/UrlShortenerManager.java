@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 
@@ -43,7 +44,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
             return null;
         }
 
-        if (googleApiKey == null || googleApiKey.length() == 0) {
+        if (StringUtils.isEmpty(googleApiKey)) {
             LOGGER.warn("googleApiKey is empty");
             return null;
         }
