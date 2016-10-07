@@ -1,5 +1,6 @@
 package com.github.simonpercic.responseecho;
 
+import com.github.simonpercic.oklog.shared.data.BodyState;
 import com.github.simonpercic.oklog.shared.data.LogData;
 import com.github.simonpercic.responseecho.config.Constants;
 import com.github.simonpercic.responseecho.manager.ResponseManager;
@@ -104,6 +105,10 @@ import okhttp3.HttpUrl;
             mav.addObject("data_request_method", logData.request_method);
             mav.addObject("data_request_url", logData.request_url);
             mav.addObject("data_protocol", logData.protocol);
+            mav.addObject("data_request_content_type", logData.request_content_type);
+            mav.addObject("data_request_content_length", logData.request_content_length);
+            mav.addObject("data_request_body_state", displayBodyState(logData.request_body_state));
+            mav.addObject("data_request_headers", logData.response_headers);
         }
 
         return mav;
@@ -114,5 +119,26 @@ import okhttp3.HttpUrl;
                 .scheme(request.getScheme())
                 .host(request.getServerName())
                 .port(request.getServerPort());
+    }
+
+    static String displayBodyState(BodyState bodyState) {
+        if (StringUtils.isEmpty(bodyState)) {
+            return null;
+        }
+
+        switch (bodyState) {
+            case PLAIN_BODY:
+                return "Plain body";
+            case NO_BODY:
+                return "No body";
+            case ENCODED_BODY:
+                return "Encoded body";
+            case BINARY_BODY:
+                return "Binary body";
+            case CHARSET_MALFORMED:
+                return "Charset malformed";
+            default:
+                throw new IllegalArgumentException("unknown body state");
+        }
     }
 }

@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import okhttp3.HttpUrl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -121,7 +122,7 @@ public class MainControllerUnitTest {
         assertEquals("response", mav.getViewName());
 
         Map<String, Object> model = mav.getModel();
-        assertEquals(6, model.size());
+        assertEquals(10, model.size());
         assertEquals("http://localhost:8080/v1/r/" + response + "?d=" + logDataString + "&short=false",
                 model.get("info_url"));
 
@@ -130,6 +131,33 @@ public class MainControllerUnitTest {
         assertEquals("request_method", model.get("data_request_method"));
         assertEquals("request_url", model.get("data_request_url"));
         assertEquals("protocol", model.get("data_protocol"));
+        assertEquals("request_content_type", model.get("data_request_content_type"));
+        assertEquals(123L, model.get("data_request_content_length"));
+        assertEquals("Plain body", model.get("data_request_body_state"));
+        assertEquals(logData.request_headers, model.get("data_request_headers"));
+    }
+
+    @Test
+    public void testDisplayBodyState() throws Exception {
+        String state;
+
+        state = MainController.displayBodyState(null);
+        assertNull(state);
+
+        state = MainController.displayBodyState(BodyState.PLAIN_BODY);
+        assertEquals("Plain body", state);
+
+        state = MainController.displayBodyState(BodyState.NO_BODY);
+        assertEquals("No body", state);
+
+        state = MainController.displayBodyState(BodyState.ENCODED_BODY);
+        assertEquals("Encoded body", state);
+
+        state = MainController.displayBodyState(BodyState.BINARY_BODY);
+        assertEquals("Binary body", state);
+
+        state = MainController.displayBodyState(BodyState.CHARSET_MALFORMED);
+        assertEquals("Charset malformed", state);
     }
 
     @Test
