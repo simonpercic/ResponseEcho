@@ -23,9 +23,7 @@ jar {
 }
 
 repositories {
-    maven {
-        url 'http://dl.bintray.com/simonpercic/maven'
-    }
+    jcenter()
     mavenCentral()
 }
 
