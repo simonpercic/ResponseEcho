@@ -1,8 +1,13 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="body (body_field, body_state, body_url, id)" role="tabpanel"
-     class="tab-pane fade in active" th:id="${id}">
+<div xmlns:th="http://www.thymeleaf.org"
+     th:fragment="body (body_field, body_state, content_type, content_length, body_url, id)"
+     role="tabpanel" class="tab-pane fade in active" th:id="${id}">
 
     <div th:if="${body_field != null}">
         <h4 th:text="${body_state != null} ? ${body_state}"></h4>
+        <p>
+            <span th:text="${content_length > 0} ? (${content_length} + (${content_length == 1} ? ' byte' : ' bytes'))"></span>
+            <span th:text="${content_type != null} ? ((${content_length > 0} ? ' | ' : '') + ${content_type})"></span>
+        </p>
         <h4><a th:href="${body_url}">show plain body</a></h4>
         <pre th:text="${body_field}" class="prettyprint pre-scrollable"></pre>
     </div>
