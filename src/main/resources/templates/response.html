@@ -58,6 +58,10 @@
                 <span th:text="${data_request_failed} ? 'Failed'"></span>
                 <span th:text="${data_response_code > 0} ? ${data_response_code}"></span>
                 <span th:text="${data_response_message != null} ? ${data_response_message}"></span>
+
+                <span th:if="${data_response_duration_ms > 0}">
+                    <span th:text="(${data_request_failed || data_response_code > 0 || data_response_message != null} ? ' | ' : '') + 'duration: ' + ${data_response_duration_ms} + ' ms'"></span>
+                </span>
             </h4>
 
             <ul class="nav nav-pills" role="tablist">
