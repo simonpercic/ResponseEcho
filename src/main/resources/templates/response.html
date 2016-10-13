@@ -54,6 +54,12 @@
             <h3 class="panel-title">Response</h3>
         </div>
         <div class="panel-body">
+            <h4>
+                <span th:text="${data_request_failed} ? 'Failed'"></span>
+                <span th:text="${data_response_code > 0} ? ${data_response_code}"></span>
+                <span th:text="${data_response_message != null} ? ${data_response_message}"></span>
+            </h4>
+
             <ul class="nav nav-pills" role="tablist">
                 <li role="presentation" class="active">
                     <a href="#responseBody" aria-controls="responseBody" role="tab" data-toggle="tab">
