@@ -16,6 +16,9 @@
             <a th:if="${data_request_url != null}" th:href="${data_request_url}" th:text="${data_request_url}"></a>
             <span th:text="${data_protocol != null} ? (' ' + ${data_protocol})"></span>
         </h3>
+        <h4 th:if="${not #strings.isEmpty(data_response_url) and not #strings.equalsIgnoreCase(data_request_url, data_response_url)}">
+            Redirected to: <a th:href="${data_response_url}" th:text="${data_response_url}"></a>
+        </h4>
     </div>
 
     <div class="panel panel-primary">
