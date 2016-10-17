@@ -41,7 +41,7 @@
             <hr/>
 
             <div class="tab-content">
-                <div th:replace="fragments/network_body :: body (body_field=${request_body}, body_state=${data_request_body_state}, content_type=${data_request_content_type}, content_length=${data_request_content_length}, body_url=${request_body_url}, id='requestBody')"></div>
+                <div th:replace="fragments/network_body :: body (body_field=${request_body}, body_state=${data_request_body_state}, content_type=${data_request_content_type}, content_length=${data_request_content_length}, body_size=0, body_url=${request_body_url}, id='requestBody')"></div>
                 <div th:replace="fragments/network_headers_list :: headers (data_field=${data_request_headers}, id='requestHeaders')"></div>
             </div>
         </div>
@@ -82,7 +82,7 @@
             <hr/>
 
             <div class="tab-content">
-                <div th:replace="fragments/network_body :: body (body_field=${response_body}, body_state=${data_response_body_state}, content_type=null, content_length=${data_response_content_length}, body_url=${response_body_url}, id='responseBody')"></div>
+                <div th:replace="fragments/network_body :: body (body_field=${response_body}, body_state=${data_response_body_state}, content_type=null, content_length=${data_response_content_length}, body_size=${data_response_body_size}, body_url=${response_body_url}, id='responseBody')"></div>
                 <div th:replace="fragments/network_headers_list :: headers (data_field=${data_response_headers}, id='responseHeaders')"></div>
             </div>
         </div>

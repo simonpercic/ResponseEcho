@@ -1,12 +1,30 @@
 <div xmlns:th="http://www.thymeleaf.org"
-     th:fragment="body (body_field, body_state, content_type, content_length, body_url, id)"
+     th:fragment="body (body_field, body_state, content_type, content_length, body_size, body_url, id)"
      role="tabpanel" class="tab-pane fade in active" th:id="${id}">
 
     <div th:if="${body_field != null}">
         <h4 th:text="${body_state != null} ? ${body_state}"></h4>
-        <p>
-            <span th:text="${content_length > 0} ? (${content_length} + (${content_length == 1} ? ' byte' : ' bytes'))"></span>
-            <span th:text="${content_type != null} ? ((${content_length > 0} ? ' | ' : '') + ${content_type})"></span>
+        <p th:with="hasLength=${content_length > 0}, hasSize=${body_size > 0}">
+
+            <span th:if="${hasLength and hasSize}">
+                <span th:if="${content_length != body_size}">
+                    <span th:text="'Content length: ' + (${content_length} + (${content_length == 1} ? ' byte' : ' bytes'))"></span>
+                    <br/>
+                    <span th:text="'Body size: ' + (${body_size} + (${body_size == 1} ? ' byte' : ' bytes'))"></span>
+                </span>
+                <span th:if="${content_length == body_size}">
+                    <span th:text="${content_length} + (${content_length == 1} ? ' byte' : ' bytes')"></span>
+                </span>
+            </span>
+
+            <span th:if="${hasLength and !hasSize}">
+                <span th:text="${content_length} + (${content_length == 1} ? ' byte' : ' bytes')"></span>
+            </span>
+
+            <span th:if="${!hasLength and hasSize}">
+                <span th:text="${body_size} + (${body_size == 1} ? ' byte' : ' bytes')"></span>
+            </span>
+
         </p>
         <h4><a th:href="${body_url}">show plain body</a></h4>
         <pre th:text="${body_field}" class="prettyprint pre-scrollable"></pre>

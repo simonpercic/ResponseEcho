@@ -136,6 +136,7 @@ import okhttp3.HttpUrl;
             mav.addObject("data_response_message", logData.response_message);
             mav.addObject("data_response_duration_ms", logData.response_duration_ms);
             mav.addObject("data_response_content_length", logData.response_content_length);
+            mav.addObject("data_response_body_size", logData.response_body_size);
             mav.addObject("data_response_body_state", displayBodyState(logData.response_body_state));
             mav.addObject("data_response_headers", logData.response_headers);
         }

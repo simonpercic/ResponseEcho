@@ -129,7 +129,7 @@ public class MainControllerUnitTest {
         assertEquals("response", mav.getViewName());
 
         Map<String, Object> model = mav.getModel();
-        assertEquals(19, model.size());
+        assertEquals(20, model.size());
         assertEquals(
                 "http://localhost:8080/v1/r/" + responseBody + "?qb=" + requestBody + "&d=" + logDataString + "&short=false",
                 model.get("info_url"));
@@ -150,6 +150,7 @@ public class MainControllerUnitTest {
         assertEquals("response_message", model.get("data_response_message"));
         assertEquals(456L, model.get("data_response_duration_ms"));
         assertEquals(789L, model.get("data_response_content_length"));
+        assertEquals(777L, model.get("data_response_body_size"));
         assertEquals("Encoded body", model.get("data_response_body_state"));
         assertEquals(logData.response_headers, model.get("data_response_headers"));
     }
