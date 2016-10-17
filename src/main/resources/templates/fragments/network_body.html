@@ -29,8 +29,4 @@
         <h4><a th:href="${body_url}">show plain body</a></h4>
         <pre th:text="${body_field}" class="prettyprint pre-scrollable"></pre>
     </div>
-
-    <div th:unless="${body_field != null}">
-        <h4>No body</h4>
-    </div>
 </div>

@@ -153,7 +153,7 @@ import okhttp3.HttpUrl;
     }
 
     static String displayBodyState(BodyState bodyState) {
-        if (StringUtils.isEmpty(bodyState)) {
+        if (bodyState == null) {
             return null;
         }
 
