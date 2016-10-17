@@ -8,21 +8,21 @@
 
             <span th:if="${hasLength and hasSize}">
                 <span th:if="${content_length != body_size}">
-                    <span th:text="'Content length: ' + (${content_length} + (${content_length == 1} ? ' byte' : ' bytes'))"></span>
+                    <span th:replace="fragments/size_bytes :: bytes (value=${content_length}, prefix='Content length: ')"></span>
                     <br/>
-                    <span th:text="'Body size: ' + (${body_size} + (${body_size == 1} ? ' byte' : ' bytes'))"></span>
+                    <span th:replace="fragments/size_bytes :: bytes (value=${body_size}, prefix='Body size: ')"></span>
                 </span>
                 <span th:if="${content_length == body_size}">
-                    <span th:text="${content_length} + (${content_length == 1} ? ' byte' : ' bytes')"></span>
+                    <span th:replace="fragments/size_bytes :: bytes (value=${content_length}, prefix=null)"></span>
                 </span>
             </span>
 
             <span th:if="${hasLength and !hasSize}">
-                <span th:text="${content_length} + (${content_length == 1} ? ' byte' : ' bytes')"></span>
+                <span th:replace="fragments/size_bytes :: bytes (value=${content_length}, prefix=null)"></span>
             </span>
 
             <span th:if="${!hasLength and hasSize}">
-                <span th:text="${body_size} + (${body_size == 1} ? ' byte' : ' bytes')"></span>
+                <span th:replace="fragments/size_bytes :: bytes (value=${body_size}, prefix=null)"></span>
             </span>
 
         </p>

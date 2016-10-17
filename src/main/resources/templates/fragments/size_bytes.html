@@ -1,0 +1,2 @@
+<span xmlns:th="http://www.thymeleaf.org" th:fragment="bytes (value, prefix)"
+      th:text="(${prefix != null} ? ${prefix} : '') + (${value} + (${value == 1} ? ' byte' : ' bytes'))"></span>
