@@ -55,7 +55,9 @@ import okhttp3.HttpUrl;
     @ResponseBody String echoResponse(@PathVariable("response") String response) throws IOException {
         analyticsManager.sendPageView("/" + RESPONSE_ECHO);
 
-        return responseManager.decodeBody(response);
+        return SharedConstants.EMPTY_RESPONSE_BODY.equals(response)
+                ? "No body"
+                : responseManager.decodeBody(response);
     }
 
     @RequestMapping(value = RESPONSE_INFO_URL, method = RequestMethod.GET)
