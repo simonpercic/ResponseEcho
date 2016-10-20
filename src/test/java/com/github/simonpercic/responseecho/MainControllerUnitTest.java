@@ -74,7 +74,7 @@ public class MainControllerUnitTest {
 
         Map<String, Object> model = mav.getModel();
         assertEquals(5, model.size());
-        assertEquals("http://localhost:8080/v1/r/" + response + "?short=false", model.get("info_url"));
+        assertEquals("http://localhost:8080/v1/r/" + response, model.get("info_url"));
         assertEquals("http://localhost:8080/v1/re/" + response, model.get("response_body_url"));
         assertEquals(decodedResponse, model.get("response_body"));
         assertEquals(null, model.get("request_body"));
@@ -91,7 +91,7 @@ public class MainControllerUnitTest {
 
         Map<String, Object> model = mav.getModel();
         assertEquals(5, model.size());
-        assertEquals("http://localhost:8080/v1/r/" + response + "?short=false", model.get("info_url"));
+        assertEquals("http://localhost:8080/v1/r/" + response, model.get("info_url"));
         assertEquals("http://localhost:8080/v1/re/" + response, model.get("response_body_url"));
         assertEquals(null, model.get("response_body"));
         assertEquals(null, model.get("request_body"));
@@ -131,7 +131,7 @@ public class MainControllerUnitTest {
         Map<String, Object> model = mav.getModel();
         assertEquals(21, model.size());
         assertEquals(
-                "http://localhost:8080/v1/r/" + responseBody + "?qb=" + requestBody + "&d=" + logDataString + "&short=false",
+                "http://localhost:8080/v1/r/" + responseBody + "?qb=" + requestBody + "&d=" + logDataString,
                 model.get("info_url"));
 
         assertEquals("http://localhost:8080/v1/re/" + responseBody, model.get("response_body_url"));
@@ -193,7 +193,7 @@ public class MainControllerUnitTest {
 
         Map<String, Object> model = mav.getModel();
         assertEquals(5, model.size());
-        assertEquals("http://localhost:8080/v1/r/" + response + "?short=false", model.get("info_url"));
+        assertEquals("http://localhost:8080/v1/r/" + response, model.get("info_url"));
         assertEquals("http://localhost:8080/v1/re/" + response, model.get("response_body_url"));
         assertEquals(decodedResponse, model.get("response_body"));
 
@@ -214,7 +214,7 @@ public class MainControllerUnitTest {
                 .addPathSegment("v1")
                 .addPathSegment("r")
                 .addEncodedPathSegment(response)
-                .addQueryParameter("short", "true")
+                .addQueryParameter("s", "1")
                 .build();
 
         String shortUrl = "http://shorturl.com/";
@@ -245,7 +245,7 @@ public class MainControllerUnitTest {
                 .addPathSegment("v1")
                 .addPathSegment("r")
                 .addEncodedPathSegment(response)
-                .addQueryParameter("short", "true")
+                .addQueryParameter("s", "1")
                 .build();
 
         when(urlShortenerManager.shorten(eq(longUrl))).thenReturn(null);

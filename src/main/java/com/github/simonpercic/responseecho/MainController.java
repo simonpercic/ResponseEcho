@@ -36,8 +36,6 @@ import okhttp3.HttpUrl;
     private static final String RESPONSE_ECHO_URL = "/" + Constants.V1 + RESPONSE_ECHO_LEGACY_URL;
     private static final String RESPONSE_INFO_URL = "/" + Constants.V1 + "/" + RESPONSE_INFO + "/{response}";
 
-    private static final String Q_SHORTEN_URL = "short";
-
     private final ResponseManager responseManager;
     private final UrlShortenerManager urlShortenerManager;
     private final AnalyticsManager analyticsManager;
@@ -66,7 +64,7 @@ import okhttp3.HttpUrl;
             @PathVariable("response") String responseBodyString,
             @RequestParam(value = SharedConstants.QUERY_PARAM_REQUEST_BODY, required = false) String requestBodyString,
             @RequestParam(value = SharedConstants.QUERY_PARAM_DATA, required = false) String logDataString,
-            @RequestParam(value = Q_SHORTEN_URL, required = false) boolean shortenUrl)
+            @RequestParam(value = SharedConstants.QUERY_SHORTEN_URL, required = false) boolean shortenUrl)
             throws IOException {
 
         HttpUrl.Builder infoUrlBuilder = requestHttpUrl(request)
@@ -82,9 +80,11 @@ import okhttp3.HttpUrl;
             infoUrlBuilder.addEncodedQueryParameter(SharedConstants.QUERY_PARAM_DATA, logDataString);
         }
 
-        HttpUrl infoUrl = infoUrlBuilder
-                .addEncodedQueryParameter(Q_SHORTEN_URL, String.valueOf(shortenUrl))
-                .build();
+        if (shortenUrl) {
+            infoUrlBuilder.addEncodedQueryParameter(SharedConstants.QUERY_SHORTEN_URL, "1");
+        }
+
+        HttpUrl infoUrl = infoUrlBuilder.build();
 
         ModelAndView mav = new ModelAndView("response");
 
