@@ -93,6 +93,9 @@
 
     <p class="url"><strong>url:</strong>
         <a th:href="${info_url}" th:text="${info_url}"></a>
+        <br/>
+        <a th:if="${info_shorten_url != null}" class="btn btn-primary shorten" th:href="${info_shorten_url}"
+           role="button">Shorten url</a>
     </p>
 </div>
 

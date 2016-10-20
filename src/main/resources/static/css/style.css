@@ -6,6 +6,10 @@
     margin-top: 20px;
 }
 
+.container .url .shorten {
+    margin-top: 5px;
+}
+
 body {
     overflow-y: scroll;
 }

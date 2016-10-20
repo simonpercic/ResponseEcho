@@ -73,11 +73,13 @@ public class MainControllerUnitTest {
         assertEquals("response", mav.getViewName());
 
         Map<String, Object> model = mav.getModel();
-        assertEquals(5, model.size());
+        assertEquals(6, model.size());
         assertEquals("http://localhost:8080/v1/r/" + response, model.get("info_url"));
+        assertEquals("http://localhost:8080/v1/r/" + response + "?s=1", model.get("info_shorten_url"));
         assertEquals("http://localhost:8080/v1/re/" + response, model.get("response_body_url"));
         assertEquals(decodedResponse, model.get("response_body"));
         assertEquals(null, model.get("request_body"));
+        assertEquals(null, model.get("request_body_url"));
     }
 
     @Test
@@ -90,11 +92,13 @@ public class MainControllerUnitTest {
         assertEquals("response", mav.getViewName());
 
         Map<String, Object> model = mav.getModel();
-        assertEquals(5, model.size());
+        assertEquals(6, model.size());
         assertEquals("http://localhost:8080/v1/r/" + response, model.get("info_url"));
+        assertEquals("http://localhost:8080/v1/r/" + response + "?s=1", model.get("info_shorten_url"));
         assertEquals("http://localhost:8080/v1/re/" + response, model.get("response_body_url"));
         assertEquals(null, model.get("response_body"));
         assertEquals(null, model.get("request_body"));
+        assertEquals(null, model.get("request_body_url"));
     }
 
     @Test
@@ -129,10 +133,13 @@ public class MainControllerUnitTest {
         assertEquals("response", mav.getViewName());
 
         Map<String, Object> model = mav.getModel();
-        assertEquals(21, model.size());
+        assertEquals(22, model.size());
         assertEquals(
                 "http://localhost:8080/v1/r/" + responseBody + "?qb=" + requestBody + "&d=" + logDataString,
                 model.get("info_url"));
+        assertEquals(
+                "http://localhost:8080/v1/r/" + responseBody + "?qb=" + requestBody + "&d=" + logDataString + "&s=1",
+                model.get("info_shorten_url"));
 
         assertEquals("http://localhost:8080/v1/re/" + responseBody, model.get("response_body_url"));
         assertEquals(decodedResponse, model.get("response_body"));
@@ -192,8 +199,9 @@ public class MainControllerUnitTest {
         assertEquals("response", mav.getViewName());
 
         Map<String, Object> model = mav.getModel();
-        assertEquals(5, model.size());
+        assertEquals(6, model.size());
         assertEquals("http://localhost:8080/v1/r/" + response, model.get("info_url"));
+        assertEquals("http://localhost:8080/v1/r/" + response + "?s=1", model.get("info_shorten_url"));
         assertEquals("http://localhost:8080/v1/re/" + response, model.get("response_body_url"));
         assertEquals(decodedResponse, model.get("response_body"));
 
@@ -227,8 +235,9 @@ public class MainControllerUnitTest {
         verify(urlShortenerManager).shorten(eq(longUrl));
 
         Map<String, Object> model = mav.getModel();
-        assertEquals(5, model.size());
+        assertEquals(6, model.size());
         assertEquals(shortUrl, model.get("info_url"));
+        assertEquals(null, model.get("info_shorten_url"));
     }
 
     @Test
@@ -257,8 +266,9 @@ public class MainControllerUnitTest {
         verify(urlShortenerManager).shorten(eq(longUrl));
 
         Map<String, Object> model = mav.getModel();
-        assertEquals(5, model.size());
+        assertEquals(6, model.size());
         assertEquals(longUrl.toString(), model.get("info_url"));
+        assertEquals(longUrl.toString(), model.get("info_shorten_url"));
     }
 
     private static HttpServletRequest mockRequest(String scheme, String serverName, int serverPort) {

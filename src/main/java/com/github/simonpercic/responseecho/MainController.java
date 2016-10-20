@@ -81,18 +81,30 @@ import okhttp3.HttpUrl;
         }
 
         if (shortenUrl) {
-            infoUrlBuilder.addEncodedQueryParameter(SharedConstants.QUERY_SHORTEN_URL, "1");
+            addShortenUrlParam(infoUrlBuilder);
         }
 
         HttpUrl infoUrl = infoUrlBuilder.build();
 
         ModelAndView mav = new ModelAndView("response");
 
+        boolean shortenUrlSuccess = false;
+
         if (shortenUrl) {
             HttpUrl shortUrl = urlShortenerManager.shorten(infoUrl);
             if (shortUrl != null) {
+                shortenUrlSuccess = true;
                 infoUrl = shortUrl;
             }
+        }
+
+        String infoShortenUrl = null;
+        if (!shortenUrlSuccess) {
+            if (!shortenUrl) {
+                addShortenUrlParam(infoUrlBuilder);
+            }
+
+            infoShortenUrl = infoUrlBuilder.build().toString();
         }
 
         HttpUrl responseBodyUrl = requestHttpUrl(request)
@@ -119,6 +131,7 @@ import okhttp3.HttpUrl;
         }
 
         mav.addObject("info_url", infoUrl.toString());
+        mav.addObject("info_shorten_url", infoShortenUrl);
         mav.addObject("response_body_url", responseBodyUrl.toString());
         mav.addObject("response_body", responseBody);
         mav.addObject("request_body_url", requestBodyUrl);
@@ -145,6 +158,10 @@ import okhttp3.HttpUrl;
         }
 
         return mav;
+    }
+
+    private static void addShortenUrlParam(HttpUrl.Builder urlBuilder) {
+        urlBuilder.addEncodedQueryParameter(SharedConstants.QUERY_SHORTEN_URL, "1");
     }
 
     private static HttpUrl.Builder requestHttpUrl(HttpServletRequest request) {
