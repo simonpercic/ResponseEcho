@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 2.0.0 *(2016-11-10)*
+----------------------------
+
+ * New: Showing detailed response info on the info page (incl. request body, url, method, content length, headers, response code, message, duration, size). 
+ * New: Anonymous Google Analytics on the response info page. 
+ * New: Option to shorten info url with the goo.gl url shortening service.
+ 
+
 Version 1.0.1 *(2016-07-21)*
 ----------------------------
 

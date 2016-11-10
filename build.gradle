@@ -33,7 +33,7 @@ targetCompatibility = 1.8
 ext.retrofitVersion = '2.1.0'
 
 dependencies {
-    compile 'com.github.simonpercic:oklog-shared:1.0.4'
+    compile 'com.github.simonpercic:oklog-shared:2.0.0'
 
     // Spring Framework
     compile 'org.springframework.boot:spring-boot-starter-web'
