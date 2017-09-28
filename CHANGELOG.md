@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 2.1.0 *(2017-09-28)*
+----------------------------
+
+ * New: Moved the hosted service to [Heroku](https://www.heroku.com/).
+
+
 Version 2.0.0 *(2016-11-10)*
 ----------------------------
 
