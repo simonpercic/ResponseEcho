@@ -29,15 +29,17 @@ import retrofit2.Retrofit;
 
     @Override
     public void sendPageView(String path) {
-        Call<Void> call = apiService.collect(
-                GoogleAnalyticsConstants.GA_VERSION,
-                GoogleAnalyticsConstants.GA_TRACKING_ID,
-                GoogleAnalyticsConstants.GA_CLIENT_ID,
-                GoogleAnalyticsConstants.GA_HIT_TYPE_PAGEVIEW,
-                GoogleAnalyticsConstants.GA_HOSTNAME,
-                path);
+        if (GoogleAnalyticsConstants.GA_ENABLED) {
+            Call<Void> call = apiService.collect(
+                    GoogleAnalyticsConstants.GA_VERSION,
+                    GoogleAnalyticsConstants.GA_TRACKING_ID,
+                    GoogleAnalyticsConstants.GA_CLIENT_ID,
+                    GoogleAnalyticsConstants.GA_HIT_TYPE_PAGEVIEW,
+                    GoogleAnalyticsConstants.GA_HOSTNAME,
+                    path);
 
-        call.enqueue(this);
+            call.enqueue(this);
+        }
     }
 
     @Override public void onResponse(Call<Void> call, Response<Void> response) {
