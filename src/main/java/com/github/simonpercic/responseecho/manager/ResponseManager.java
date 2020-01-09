@@ -1,6 +1,7 @@
 package com.github.simonpercic.responseecho.manager;
 
 import com.github.simonpercic.oklog.shared.LogDataSerializer;
+import com.github.simonpercic.oklog.shared.data.HeaderData;
 import com.github.simonpercic.oklog.shared.data.LogData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,6 +9,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
+import com.squareup.wire.FieldEncoding;
+import com.squareup.wire.ProtoAdapter;
+import com.squareup.wire.ProtoReader;
 import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -70,11 +74,8 @@ public class ResponseManager {
         GZIPInputStream gzipInputStream = new GZIPInputStream(bis);
         byte[] logData = IOUtils.toByteArray(gzipInputStream);
 
-        com.github.simonpercic.responseecho.manager.LogData data = com.github.simonpercic.responseecho.manager.LogData.ADAPTER.decode(logData);
-
         return LogDataSerializer.deserialize(logData);
     }
-
     /**
      * Try to pretty-print the response string, if JSON.
      *

@@ -1,14 +1,17 @@
 buildscript {
+    ext.kotlin_version = '1.3.61'
     repositories {
         mavenCentral()
     }
 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:2.2.2.RELEASE")
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 apply plugin: 'java'
+apply plugin: 'kotlin'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
@@ -48,7 +51,18 @@ dependencies {
     testCompile "org.mockito:mockito-core:1.10.19"
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 
-    implementation 'com.squareup.wire:wire-runtime:3.0.3'
+    implementation 'com.squareup.wire:wire-runtime:2.2.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 

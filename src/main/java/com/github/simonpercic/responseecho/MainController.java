@@ -2,6 +2,7 @@ package com.github.simonpercic.responseecho;
 
 import com.github.simonpercic.oklog.shared.SharedConstants;
 import com.github.simonpercic.oklog.shared.data.BodyState;
+import com.github.simonpercic.oklog.shared.data.HeaderData;
 import com.github.simonpercic.oklog.shared.data.LogData;
 import com.github.simonpercic.responseecho.config.Constants;
 import com.github.simonpercic.responseecho.manager.ResponseManager;
@@ -155,6 +156,10 @@ import okhttp3.HttpUrl;
             mav.addObject("data_response_body_state", displayBodyState(logData.response_body_state));
             mav.addObject("data_response_headers", logData.response_headers);
             mav.addObject("data_response_url", logData.response_url);
+
+//            if(logData.request_headers != null && logData.request_headers.size() > 0){
+//                UtilsKt.getMap(logData.request_headers).get("Authorization")
+//            }
         }
 
         return mav;
