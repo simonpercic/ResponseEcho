@@ -65,5 +65,20 @@ compileTestKotlin {
     }
 }
 
+task stage(type: Copy, dependsOn: [clean, assemble]) {
+    from jar.archivePath
+    into project.rootDir
+    rename {
+        'app.jar'
+    }
+}
+stage.mustRunAfter(clean)
+
+clean {
+    doLast {
+        project.file('app.jar').delete()
+    }
+}
+
 
 
