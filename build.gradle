@@ -1,25 +1,24 @@
-group 'com.github.simonpercic.responseecho'
-version VERSION_NAME
-
 buildscript {
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.6.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.2.2.RELEASE")
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
-mainClassName = "com.github.simonpercic.responseecho.Application"
+group 'com.github.simonpercic.responseecho'
+version VERSION_NAME
 
-jar {
-    baseName = 'responseecho'
-    version = VERSION_NAME
+bootJar {
+    archiveBaseName = 'responseecho'
+    archiveVersion = VERSION_NAME
 }
 
 repositories {
@@ -28,12 +27,11 @@ repositories {
 }
 
 sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 ext.retrofitVersion = '2.1.0'
 
 dependencies {
-    compile 'com.github.simonpercic:oklog-shared:2.2.0'
+    implementation 'com.github.simonpercic:oklog-shared:2.2.0'
 
     // Spring Framework
     compile 'org.springframework.boot:spring-boot-starter-web'
@@ -49,21 +47,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:1.10.19"
     testCompile 'org.springframework.boot:spring-boot-starter-test'
+
+    implementation 'com.squareup.wire:wire-runtime:3.0.3'
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.14'
-}
 
-task stage(type: Copy, dependsOn: [clean, assemble]) {
-    from jar.archivePath
-    into project.rootDir
-    rename {
-        'app.jar'
-    }
-}
-stage.mustRunAfter(clean)
 
-clean << {
-    project.file('app.jar').delete()
-}

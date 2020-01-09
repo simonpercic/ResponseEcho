@@ -2,7 +2,9 @@ package com.github.simonpercic.responseecho.manager.analytics.ga;
 
 import com.github.simonpercic.responseecho.manager.analytics.AnalyticsManager;
 
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +18,7 @@ import retrofit2.Retrofit;
  */
 @Component @Profile("prod") class GoogleAnalyticsManager implements AnalyticsManager, Callback<Void> {
 
-    private static final Logger LOGGER = Logger.getLogger(GoogleAnalyticsManager.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(GoogleAnalyticsManager.class.getName());
 
     private final GoogleAnalyticsApiService apiService;
 

@@ -1,6 +1,8 @@
 package com.github.simonpercic.responseecho.manager.analytics;
 
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component @Profile("dev") class NoOpAnalyticsManager implements AnalyticsManager {
 
-    private static final Logger LOGGER = Logger.getLogger(NoOpAnalyticsManager.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(NoOpAnalyticsManager.class.getName());
 
     @Override public void sendPageView(String path) {
         LOGGER.info("Would send page view: " + path);

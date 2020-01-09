@@ -70,6 +70,8 @@ public class ResponseManager {
         GZIPInputStream gzipInputStream = new GZIPInputStream(bis);
         byte[] logData = IOUtils.toByteArray(gzipInputStream);
 
+        com.github.simonpercic.responseecho.manager.LogData data = com.github.simonpercic.responseecho.manager.LogData.ADAPTER.decode(logData);
+
         return LogDataSerializer.deserialize(logData);
     }
 
