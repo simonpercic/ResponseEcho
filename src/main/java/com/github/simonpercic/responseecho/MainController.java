@@ -157,6 +157,10 @@ import okhttp3.HttpUrl;
             mav.addObject("data_response_headers", logData.response_headers);
             mav.addObject("data_response_url", logData.response_url);
 
+            //adding query Params
+            mav.addObject("data_request_query_params",UtilsKt.getUrlQueryParam(logData.request_url));
+            mav.addObject("data_mapi_url","localhost:8080"+logData.response_url.substring(logData.response_url.indexOf("/v5")));
+
 //            if(logData.request_headers != null && logData.request_headers.size() > 0){
 //                UtilsKt.getMap(logData.request_headers).get("Authorization")
 //            }

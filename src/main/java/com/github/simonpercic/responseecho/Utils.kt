@@ -1,5 +1,23 @@
 package com.github.simonpercic.responseecho
 
 import com.github.simonpercic.oklog.shared.data.HeaderData
+import org.omg.CORBA.NameValuePair
+import java.net.URI
+import java.net.URL
+import java.net.URLDecoder
 
-fun List<HeaderData>.getMap() : Map<String,String> = this.associate { Pair(it.name,it.value) }
+
+fun List<HeaderData>.authorization() : String? = this.associate { Pair(it.name,it.value) }["Authorization"]
+
+fun String?.getUrlQueryParam() : List<HeaderData> {
+    val queryList = ArrayList<HeaderData>()
+    this?.let {
+        val url = URL(it).query
+       url.split("&").forEach {
+           val (name,value) = it.split("=")
+           queryList.add(HeaderData(name, URLDecoder.decode(value)))
+       }
+    }
+
+    return queryList
+}

@@ -1,5 +1,5 @@
 <div xmlns:th="http://www.thymeleaf.org"
-     th:fragment="body (body_field, body_state, content_type, content_length, body_size, body_url, id)"
+     th:fragment="body (body_field, body_state, content_type, content_length, body_size, body_url, id,json_panel_id)"
      role="tabpanel" class="tab-pane fade in active" th:id="${id}">
 
     <div th:if="${body_field != null}">
@@ -27,6 +27,6 @@
 
         </p>
         <h4><a th:href="${body_url}">show plain body</a></h4>
-        <pre th:text="${body_field}" class="prettyprint pre-scrollable"></pre>
+        <pre th:text="${body_field}" class="prettyprint pre-scrollable" th:id="${json_panel_id}"></pre>
     </div>
 </div>

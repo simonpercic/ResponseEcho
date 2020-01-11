@@ -2,7 +2,7 @@
      th:id="${id}">
 
     <table th:if="${not #lists.isEmpty(data_field)}" class="table table-hover">
-        <thead>
+        <thead class="thead-dark">
         <tr>
             <th>#</th>
             <th>Name</th>
@@ -18,4 +18,10 @@
         </tr>
         </tbody>
     </table>
+
+    <script th:inline="javascript">
+        function copyToClipboard(myData){
+            navigator.clipboard.writeText(myData.toString());
+        }
+    </script>
 </div>
