@@ -10,135 +10,195 @@
 
 <div class="container">
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <h4>
-                    <span th:text="${data_request_method != null} ? (${data_request_method} + ' ')"></span>
-                    <a th:if="${data_request_url != null}" th:href="${data_request_url}" th:text="${data_request_url}"></a>
-                    <span th:text="${data_protocol != null} ? (' ' + ${data_protocol})"></span>
-                </h4>
+    <div class="flex-row">
+        <div class="flex-column">
+            <div class="container">
+                <div class="flex-row info-block">
+                    <div class="d-flex text-white font-weight-bold" id="infoCollapseTrigger" data-toggle="collapse"
+                         data-target="infoCollapse" aria-controls="infoCollapse"
+                         th:classappend="${data_request_failed} ? bg-danger : bg-success"
+                         style="padding: 0.75rem 1.25rem;border-radius: 5px 5px 0 0;">
+                        Info
+                    </div>
+                    <div id="infoCollapse" class="collapse show" aria-expanded="true">
+                        <div class="d-flex" style="padding: 0.75rem 1.25rem;overflow-x: scroll;">
+                    <span class="text-md-left font-weight-bold mr-1" style="color: green;"
+                          th:text="${data_request_method}"></span> : <a th:href="${data_response_url}" class="ml-1 text"
+                                                                        th:text="${data_response_url}">
+                        </a>
+                        </div>
+                        <div class="d-flex" style="padding: 0.75rem 1.25rem">
+                            <button type="button" class="btn btn-primary flex-fill mr-3 btn-ripple" id="urlCopyBtn">Copy Request Url
+                            </button>
+                            <button type="button" class="btn btn-primary flex-fill ml-3 btn-ripple" id="urlMapiCopyBtn">Copy MAPI Url
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <h4 th:if="${not #strings.isEmpty(data_response_url) and not #strings.equalsIgnoreCase(data_request_url, data_response_url)}">
-                    Redirected to: <a th:href="${data_response_url}" th:text="${data_response_url}"></a>
-                </h4>
+        <div class="flex-column">
+            <div class="card">
+                <div class="card-header">
+                    <div class="bg-primary text-white font-weight-bold tab-title clearfix">
+                        Request
+                        <span class="badge badge-pill p-1 ml-1"
+                              th:classappend="${data_request_failed} ? badge-danger : badge-success"
+                              th:text="${data_response_code}"></span>
+                        <span class="badge badge-pill badge-warning p-1 ml-1" th:text="${data_request_method}"></span>
+                        <span th:replace="fragments/content_size_badge :: bytes (${data_response_body_size}, ${data_request_content_length})"></span>
+                        <div class="float-right">
+                            <button type="button" class="btn btn-success mr-2 btn-ripple"
+                                    th:if="${data_request_content_length > 0}" id="copyRequestBody">Copy Body
+                            </button>
+                            <a class="btn btn-success btn-ripple" role="button" th:href="${request_body_url}" th:target="_blank">Show plain body</a>
+                        </div>
+                    </div>
+                    <div class="tab-header">
+                        <ul class="nav nav-pills nav-fill" role="tablist">
+                            <li role="presentation" class="nav-item" th:if="${data_request_content_length > 0}">
+                                <a href="#requestBody" aria-controls="requestBody" class="nav-link"
+                                   th:classappend="${data_request_content_length > 0} ? active"
+                                   th:attr="aria-selected=${data_request_content_length > 0} ? true : false" role="tab"
+                                   data-toggle="tab">
+                                    Body
+                                </a>
+                            </li>
+                            <li role="presentation" class="nav-item">
+                                <a href="#requestHeaders" aria-controls="requestHeaders" class="nav-link"
+                                   th:classappend="${data_request_content_length == 0} ? active"
+                                   th:attr="aria-selected=${data_request_content_length == 0} ? true : false"
+                                   role="tab" data-toggle="tab">
+                                    Headers
+                                    <span th:text="${not #lists.isEmpty(data_request_headers)} ? ${#lists.size(data_request_headers)} : '0'"
+                                          class="badge badge-secondary"></span>
+                                </a>
+                            </li>
+                            <li role="presentation" class="nav-item">
+                                <a href="#requestParams" aria-controls="requestParams" class="nav-link"
+                                   aria-selected="false" role="tab" data-toggle="tab">
+                                    Query Param
+                                    <span th:text="${not #lists.isEmpty(data_request_query_params)} ? ${#lists.size(data_request_query_params)} : '0'"
+                                          class="badge badge-secondary"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body" style="padding: 0">
+                    <div class="tab-content" style="padding: 0">
+                        <div th:replace="fragments/network_body :: body (body_field=${request_body}, body_state=${data_request_body_state}, content_type=${data_request_content_type}, content_length=${data_request_content_length}, body_size=0, body_url=${request_body_url}, id='requestBody',json_panel_id='requestJson')"></div>
+                        <div th:replace="fragments/network_headers_list :: headers (content_length=${data_request_content_length},data_field=${data_request_headers}, id='requestHeaders')"></div>
+                        <div th:replace="fragments/network_headers_list :: headers (content_length=${data_request_content_length},data_field=${data_request_query_params}, id='requestParams')"></div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <button type="button" class="btn btn-outline-primary" id="urlCopyBtn">Copy Request Url</button>
-            <button type="button" class="btn btn-outline-primary" id="urlMapiCopyBtn">Copy MAPI Url</button>
-        </div>
-    </div>
-
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">Request</h3>
-        </div>
-        <div class="panel-body">
-            <ul class="nav nav-pills" role="tablist">
-                <li role="presentation" class="active">
-                    <a href="#requestBody" aria-controls="requestBody" role="tab" data-toggle="tab">
-                        Body
-                    </a>
-                </li>
-                <li role="presentation">
-                    <a href="#requestHeaders" aria-controls="requestHeaders" role="tab" data-toggle="tab">
-                        Headers
-                        <span th:text="${not #lists.isEmpty(data_request_headers)} ? ${#lists.size(data_request_headers)} : '0'"
-                              class="badge"></span>
-                    </a>
-                </li>
-                <li role="presentation">
-                    <a href="#requestParams" aria-controls="requestParams" role="tab" data-toggle="tab">
-                        Query Param
-                        <span th:text="${not #lists.isEmpty(data_request_query_params)} ? ${#lists.size(data_request_query_params)} : '0'"
-                              class="badge"></span>
-                    </a>
-                </li>
-            </ul>
-
-            <hr/>
-
-            <div class="tab-content">
-                <div th:replace="fragments/network_body :: body (body_field=${request_body}, body_state=${data_request_body_state}, content_type=${data_request_content_type}, content_length=${data_request_content_length}, body_size=0, body_url=${request_body_url}, id='requestBody',json_panel_id='requestJson')"></div>
-                <div th:replace="fragments/network_headers_list :: headers (data_field=${data_request_headers}, id='requestHeaders')"></div>
-                <div th:replace="fragments/network_headers_list :: headers (data_field=${data_request_query_params}, id='requestParams')"></div>
-            </div>
-        </div>
-    </div>
-
-    <hr/>
-
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">Response</h3>
-        </div>
-        <div class="panel-body">
-            <h4>
-                <span th:text="${data_request_failed} ? 'Failed'"></span>
-                <span th:text="${data_response_code > 0} ? ${data_response_code}"></span>
-                <span th:text="${data_response_message != null} ? ${data_response_message}"></span>
-
-                <span th:if="${data_response_duration_ms > 0}">
-                    <span th:text="(${data_request_failed || data_response_code > 0 || data_response_message != null} ? ' | ' : '') + 'duration: ' + ${data_response_duration_ms} + ' ms'"></span>
-                </span>
-            </h4>
-
-            <ul class="nav nav-pills" role="tablist">
-                <li role="presentation" class="active">
-                    <a href="#responseBody" aria-controls="responseBody" role="tab" data-toggle="tab">
-                        Body
-                    </a>
-                </li>
-                <li role="presentation">
-                    <a href="#responseHeaders" aria-controls="responseHeaders" role="tab" data-toggle="tab">
-                        Headers
-                        <span th:text="${not #lists.isEmpty(data_response_headers)} ? ${#lists.size(data_response_headers)} : '0'"
-                              class="badge"></span>
-                    </a>
-                </li>
-            </ul>
-
-            <hr/>
-
-            <div class="tab-content">
-                <div th:replace="fragments/network_body :: body (body_field=${response_body}, body_state=${data_response_body_state}, content_type=null, content_length=${data_response_content_length}, body_size=${data_response_body_size}, body_url=${response_body_url}, id='responseBody',json_panel_id='responseJson')"></div>
-                <div th:replace="fragments/network_headers_list :: headers (data_field=${data_response_headers}, id='responseHeaders')"></div>
+        <div class="flex-column">
+            <div class="card">
+                <div class="card-header">
+                    <div class="bg-primary text-white font-weight-bold tab-title clearfix">
+                        Response
+                        <span class="badge badge-pill p-1 ml-1"
+                              th:classappend="${data_request_failed} ? badge-danger : badge-success"
+                              th:text="${data_response_code}"></span>
+                        <span class="badge badge-pill badge-warning p-1 ml-1" th:text="${data_request_method}" data-toggle="tooltip" data-placement="top" title="Request method"></span>
+                        <span th:replace="fragments/content_size_badge :: bytes (${data_response_body_size}, ${data_request_content_length})"></span>
+                        <span th:if="${data_response_duration_ms > 0}" class="badge badge-pill badge-dark p-1 ml-1"
+                              th:text="${data_response_duration_ms} + ' ms'"></span>
+                        <div class="float-right">
+                            <button type="button" class="btn btn-success mr-2 btn-ripple" th:if="${data_response_body_size > 0}"
+                                    id="copyResponseBody">Copy Body
+                            </button>
+                            <a class="btn btn-success btn-ripple" role="button" th:href="${response_body_url}" th:target="_blank">Show plain body</a>
+                        </div>
+                    </div>
+                    <div class="tab-header">
+                        <ul class="nav nav-pills nav-fill" role="tablist">
+                            <li role="presentation" class="nav-item">
+                                <a href="#responseBody" aria-controls="responseBody" class="nav-link active"
+                                   aria-selected="true"
+                                   role="tab" data-toggle="tab">
+                                    Body
+                                </a>
+                            </li>
+                            <li role="presentation" class="nav-item">
+                                <a href="#responseHeaders" aria-controls="responseHeaders" class="nav-link"
+                                   aria-selected="false"
+                                   role="tab" data-toggle="tab">
+                                    Headers
+                                    <span th:text="${not #lists.isEmpty(data_response_headers)} ? ${#lists.size(data_response_headers)} : '0'"
+                                          class="badge badge-secondary"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body" style="padding: 0">
+                    <div class="tab-content" style="padding: 0">
+                        <div th:replace="fragments/network_body :: body (body_field=${response_body}, body_state=${data_response_body_state}, content_type=null, content_length=${data_response_content_length}, body_size=${data_response_body_size}, body_url=${response_body_url}, id='responseBody',json_panel_id='responseJson')"></div>
+                        <div th:replace="fragments/network_headers_list :: headers (content_length=${data_response_body_size},data_field=${data_response_headers}, id='responseHeaders')"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <p class="url"><strong>url:</strong>
-        <a th:href="${info_url}" th:text="${info_url}"></a>
+        <a th:href="${info_url}" class="d-flex" style="overflow-x: scroll" th:text="${info_url}">
+        </a>
         <br/>
-        <a th:if="${info_shorten_url != null}" class="btn btn-primary shorten" th:href="${info_shorten_url}"
+        <a th:if="${info_shorten_url != null}" class="btn btn-primary shorten btn-ripple" th:href="${info_shorten_url}"
            role="button">Shorten url</a>
     </p>
 </div>
 <script src="/js/init.js"
         th:src="@{/js/init.js}"></script>
 <script th:inline="javascript">
-    $( document ).ready(function() {
+    $(document).ready(function () {
         var mydataresp = /*[[${response_body}]]*/ {};
         var mydatareq = /*[[${request_body}]]*/ {};
+        var info_short_url = /*[[${info_shorten_url}]]*/ {};
+        console.log(`short url - ${info_short_url}`);
         console.log(mydatareq);
         console.log(mydataresp);
-        renderjson('#requestJson',mydatareq);
-        renderjson('#responseJson',mydataresp);
+        renderjson('#requestJson', mydatareq);
+        renderjson('#responseJson', mydataresp);
 
-        $('#urlCopyBtn').on('click', function(event) {
+        $('#urlCopyBtn').on('click', function (event) {
             event.preventDefault(); // To prevent following the link (optional)
             let url = /*[[${data_response_url}]]*/ {};
             copyToClipboard(url);
         });
 
-        $('#urlMapiCopyBtn').on('click', function(event) {
+        $('#urlMapiCopyBtn').on('click', function (event) {
             event.preventDefault(); // To prevent following the link (optional)
             let url = /*[[${data_mapi_url}]]*/ {};
             copyToClipboard(url);
+        });
+
+        $('#copyRequestBody').on('click', function (event) {
+            copyToClipboard(mydatareq);
+        });
+
+        $('#copyResponseBody').on('click', function (event) {
+            copyToClipboard(mydataresp);
+        });
+
+        $('#infoCollapseTrigger').click(function () {
+            $('#infoCollapse').collapse('toggle')
+        });
+
+        $('#infoCollapseTrigger').hover(function () {
+            $(this).css('cursor','pointer');
+        });
+
+        $('#infoCollapse').on('show.bs.collapse',function(){
+            $('#infoCollapseTrigger').css("border-radius","5px 5px 0 0")
+        });
+
+        $('#infoCollapse').on('hidden.bs.collapse',function(){
+            $('#infoCollapseTrigger').css("border-radius","5px 5px 5px 5px")
         });
     });
 </script>

@@ -1,27 +1,12 @@
-<div xmlns:th="http://www.thymeleaf.org" th:fragment="headers (data_field, id)" role="tabpanel" class="tab-pane fade"
-     th:id="${id}">
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="headers (content_length,data_field, id)" role="tabpanel" class="tab-pane fade"
+     th:id="${id}" style="margin: 20px;" th:classappend="${id == 'requestHeaders' && content_length == 0} ? 'active show'">
 
-    <table th:if="${not #lists.isEmpty(data_field)}" class="table table-hover">
-        <thead class="thead-dark">
-        <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Value</th>
-        </tr>
-        </thead>
-
+    <table th:if="${not #lists.isEmpty(data_field)}" class="table table-hover table-borderless" data-toggle="table">
         <tbody>
-        <tr th:each="header,itrStat : ${data_field}">
-            <td th:text="${itrStat.index + 1}"></td>
-            <td th:text="${header.name}"></td>
-            <td th:text="${header.value}"></td>
-        </tr>
+            <tr th:each="header,itrStat : ${data_field}" class="table-cell">
+                <td th:text="${header.name}" style="font-weight: bold;align-content: center" class="col-auto" data-align="center" data-width="100"></td>
+                <td th:text="${header.value}" style="align-content: center" class="col-auto" data-align="center" ></td>
+            </tr>
         </tbody>
     </table>
-
-    <script th:inline="javascript">
-        function copyToClipboard(myData){
-            navigator.clipboard.writeText(myData.toString());
-        }
-    </script>
 </div>

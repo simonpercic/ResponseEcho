@@ -1,32 +1,33 @@
 <div xmlns:th="http://www.thymeleaf.org"
      th:fragment="body (body_field, body_state, content_type, content_length, body_size, body_url, id,json_panel_id)"
-     role="tabpanel" class="tab-pane fade in active" th:id="${id}">
+     role="tabpanel" class="tab-pane fade in" th:id="${id}"
+th:classappend="${(json_panel_id == 'requestJson' && content_length >0) || (json_panel_id == 'responseJson' && body_size >0)} ? 'active show'">
 
     <div th:if="${body_field != null}">
-        <h4 th:text="${body_state != null} ? ${body_state}"></h4>
-        <p th:with="hasLength=${content_length > 0}, hasSize=${body_size > 0}">
+<!--        <h4 th:text="${body_state != null} ? ${body_state}"></h4>-->
+<!--        <p th:with="hasLength=${content_length > 0}, hasSize=${body_size > 0}">-->
 
-            <span th:if="${hasLength and hasSize}">
-                <span th:if="${content_length != body_size}">
-                    <span th:replace="fragments/size_bytes :: bytes (value=${content_length}, prefix='Content length: ')"></span>
-                    <br/>
-                    <span th:replace="fragments/size_bytes :: bytes (value=${body_size}, prefix='Body size: ')"></span>
-                </span>
-                <span th:if="${content_length == body_size}">
-                    <span th:replace="fragments/size_bytes :: bytes (value=${content_length}, prefix=null)"></span>
-                </span>
-            </span>
+<!--            <span th:if="${hasLength and hasSize}">-->
+<!--                <span th:if="${content_length != body_size}">-->
+<!--                    <span th:replace="fragments/size_bytes :: bytes (value=${content_length}, prefix='Content length: ')"></span>-->
+<!--                    <br/>-->
+<!--                    <span th:replace="fragments/size_bytes :: bytes (value=${body_size}, prefix='Body size: ')"></span>-->
+<!--                </span>-->
+<!--                <span th:if="${content_length == body_size}">-->
+<!--                    <span th:replace="fragments/size_bytes :: bytes (value=${content_length}, prefix=null)"></span>-->
+<!--                </span>-->
+<!--            </span>-->
 
-            <span th:if="${hasLength and !hasSize}">
-                <span th:replace="fragments/size_bytes :: bytes (value=${content_length}, prefix=null)"></span>
-            </span>
+<!--            <span th:if="${hasLength and !hasSize}">-->
+<!--                <span th:replace="fragments/size_bytes :: bytes (value=${content_length}, prefix=null)"></span>-->
+<!--            </span>-->
 
-            <span th:if="${!hasLength and hasSize}">
-                <span th:replace="fragments/size_bytes :: bytes (value=${body_size}, prefix=null)"></span>
-            </span>
+<!--            <span th:if="${!hasLength and hasSize}">-->
+<!--                <span th:replace="fragments/size_bytes :: bytes (value=${body_size}, prefix=null)"></span>-->
+<!--            </span>-->
 
-        </p>
-        <h4><a th:href="${body_url}">show plain body</a></h4>
-        <pre th:text="${body_field}" class="prettyprint pre-scrollable" th:id="${json_panel_id}"></pre>
+<!--        </p>-->
+<!--        <h4><a th:href="${body_url}">show plain body</a></h4>-->
+        <pre th:text="${body_field}"  class="pre-scrollable" th:id="${json_panel_id}"></pre>
     </div>
 </div>

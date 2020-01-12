@@ -17,3 +17,62 @@ body {
 .pre-scrollable {
     max-height: 400px;
 }
+
+.card{
+    margin-top: 30px;
+}
+
+.info-block{
+    background-color: #e6f9ff;
+    border-radius: 5px;
+    margin-top: 30px;
+}
+
+.card-header{
+    padding: 0;
+}
+
+.tab-title {
+    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+    padding: 0.75rem 1.25rem;
+}
+
+.tab-header{
+    padding: 0.75rem 1.25rem;
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+#jsonBody {
+    background-color: #F1F1F0;
+}
+
+.btn-ripple {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    transition: all ease-in-out .2s;
+}
+
+.btn-ripple::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 25%;
+    height: 100%;
+    width: 50%;
+    background-color: #000;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+    transition: all ease-in-out 1s;
+    transform: scale(5, 5);
+}
+
+.btn-ripple:active::after {
+    padding: 0;
+    margin: 0;
+    opacity: .2;
+    transition: 0s;
+    transform: scale(0, 0);
+}
