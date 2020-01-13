@@ -200,6 +200,11 @@
         $('#infoCollapse').on('hidden.bs.collapse',function(){
             $('#infoCollapseTrigger').css("border-radius","5px 5px 5px 5px")
         });
+
+        $(document).imagePreview({
+            elements : ['.json-string']
+        });
+
     });
 </script>
 </body>
