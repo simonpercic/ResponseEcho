@@ -21,3 +21,16 @@ fun String?.getUrlQueryParam() : List<HeaderData> {
 
     return queryList
 }
+
+fun String?.getPlainUrlQueryParam() : HashMap<String,String?> {
+    val queryList = HashMap<String,String?>()
+    this?.let {
+        val url = URL(it).query
+        url.split("&").forEach {
+            val (name,value) = it.split("=")
+            queryList.put(name, URLDecoder.decode(value))
+        }
+    }
+
+    return queryList
+}

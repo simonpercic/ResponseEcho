@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.net.URI;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,7 +30,8 @@ import okhttp3.HttpUrl;
 /**
  * @author Simon Percic <a href="https://github.com/simonpercic">https://github.com/simonpercic</a>
  */
-@RestController class MainController {
+@RestController
+class MainController {
 
     private static final String RESPONSE_ECHO = "re";
     private static final String RESPONSE_INFO = "r";
@@ -41,8 +44,9 @@ import okhttp3.HttpUrl;
     private final UrlShortenerManager urlShortenerManager;
     private final AnalyticsManager analyticsManager;
 
-    @Autowired MainController(ResponseManager responseManager, UrlShortenerManager urlShortenerManager,
-            AnalyticsManager analyticsManager) {
+    @Autowired
+    MainController(ResponseManager responseManager, UrlShortenerManager urlShortenerManager,
+                   AnalyticsManager analyticsManager) {
         this.responseManager = responseManager;
         this.urlShortenerManager = urlShortenerManager;
         this.analyticsManager = analyticsManager;
@@ -51,7 +55,8 @@ import okhttp3.HttpUrl;
     @RequestMapping(value = {RESPONSE_ECHO_LEGACY_URL, RESPONSE_ECHO_URL},
             method = RequestMethod.GET,
             produces = "application/json")
-    @ResponseBody String echoResponse(@PathVariable("response") String response) throws IOException {
+    @ResponseBody
+    String echoResponse(@PathVariable("response") String response) throws IOException {
         analyticsManager.sendPageView("/" + RESPONSE_ECHO);
 
         return SharedConstants.EMPTY_RESPONSE_BODY.equals(response)
@@ -65,27 +70,53 @@ import okhttp3.HttpUrl;
             @PathVariable("response") String responseBodyString,
             @RequestParam(value = SharedConstants.QUERY_PARAM_REQUEST_BODY, required = false) String requestBodyString,
             @RequestParam(value = SharedConstants.QUERY_PARAM_DATA, required = false) String logDataString,
-            @RequestParam(value = SharedConstants.QUERY_SHORTEN_URL, required = false) boolean shortenUrl)
+            @RequestParam(value = SharedConstants.QUERY_SHORTEN_URL, required = false) boolean shortenUrl,
+            @RequestParam(value = SharedConstants.QUERY_FIREBASE_URL, required = false) boolean firebaseUrl)
             throws IOException {
+        HttpUrl infoUrl = null;
+        HttpUrl.Builder infoUrlBuilder;
 
-        HttpUrl.Builder infoUrlBuilder = requestHttpUrl(request)
-                .addPathSegment(Constants.V1)
-                .addPathSegment(RESPONSE_INFO)
-                .addEncodedPathSegment(responseBodyString);
+        if (firebaseUrl) {
+            String data = "";
+            data = FirebaseUtils.INSTANCE.getData(responseBodyString);
+            String url = requestHttpUrl(request)
+                    .addPathSegment(Constants.V1)
+                    .addPathSegment(RESPONSE_INFO)
+                    .toString() + "/" + data;
 
-        if (!StringUtils.isEmpty(requestBodyString)) {
-            infoUrlBuilder.addEncodedQueryParameter(SharedConstants.QUERY_PARAM_REQUEST_BODY, requestBodyString);
+            HashMap<String, String> queryParams = UtilsKt.getPlainUrlQueryParam(url);
+            if (queryParams.containsKey(SharedConstants.QUERY_PARAM_REQUEST_BODY)) {
+                responseBodyString = data.substring(0, data.indexOf("?" + SharedConstants.QUERY_PARAM_REQUEST_BODY));
+            } else {
+                responseBodyString = data.substring(0, data.indexOf("?" + SharedConstants.QUERY_PARAM_DATA));
+            }
+            logDataString = queryParams.get(SharedConstants.QUERY_PARAM_DATA);
+            requestBodyString = queryParams.get(SharedConstants.QUERY_PARAM_REQUEST_BODY);
+            infoUrlBuilder = requestHttpUrl(request)
+                    .addPathSegment(Constants.V1)
+                    .addPathSegment(RESPONSE_INFO)
+                    .addPathSegment(responseBodyString);
+            infoUrl = infoUrlBuilder.build();
+        } else {
+            infoUrlBuilder = requestHttpUrl(request)
+                    .addPathSegment(Constants.V1)
+                    .addPathSegment(RESPONSE_INFO)
+                    .addEncodedPathSegment(responseBodyString);
+
+            if (!StringUtils.isEmpty(requestBodyString)) {
+                infoUrlBuilder.addEncodedQueryParameter(SharedConstants.QUERY_PARAM_REQUEST_BODY, requestBodyString);
+            }
+
+            if (!StringUtils.isEmpty(logDataString)) {
+                infoUrlBuilder.addEncodedQueryParameter(SharedConstants.QUERY_PARAM_DATA, logDataString);
+            }
+
+            if (shortenUrl) {
+                addShortenUrlParam(infoUrlBuilder);
+            }
+
+            infoUrl = infoUrlBuilder.build();
         }
-
-        if (!StringUtils.isEmpty(logDataString)) {
-            infoUrlBuilder.addEncodedQueryParameter(SharedConstants.QUERY_PARAM_DATA, logDataString);
-        }
-
-        if (shortenUrl) {
-            addShortenUrlParam(infoUrlBuilder);
-        }
-
-        HttpUrl infoUrl = infoUrlBuilder.build();
 
         ModelAndView mav = new ModelAndView("response");
 
@@ -158,8 +189,8 @@ import okhttp3.HttpUrl;
             mav.addObject("data_response_url", logData.response_url);
 
             //adding query Params
-            mav.addObject("data_request_query_params",UtilsKt.getUrlQueryParam(logData.request_url));
-            mav.addObject("data_mapi_url","localhost:8080"+logData.response_url.substring(logData.response_url.indexOf("/v5")));
+            mav.addObject("data_request_query_params", UtilsKt.getUrlQueryParam(logData.request_url));
+            mav.addObject("data_mapi_url", "localhost:8080" + logData.response_url.substring(logData.response_url.indexOf("/v5")));
 
 //            if(logData.request_headers != null && logData.request_headers.size() > 0){
 //                UtilsKt.getMap(logData.request_headers).get("Authorization")
