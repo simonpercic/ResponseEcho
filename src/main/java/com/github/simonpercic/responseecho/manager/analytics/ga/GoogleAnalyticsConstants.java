@@ -8,6 +8,7 @@ final class GoogleAnalyticsConstants {
     private GoogleAnalyticsConstants() {
     }
 
+    static final boolean GA_ENABLED = false;
     static final String GA_URL = "https://www.google-analytics.com/";
 
     static final String GA_VERSION = "1";
