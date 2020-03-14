@@ -4,7 +4,8 @@ import com.github.simonpercic.responseecho.manager.urlshortener.api.request.UrlR
 import com.github.simonpercic.responseecho.manager.urlshortener.api.response.UrlResponse;
 import com.google.gson.Gson;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Component public class UrlShortenerManager {
 
-    private static final Logger LOGGER = Logger.getLogger(UrlShortenerManager.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(UrlShortenerManager.class);
 
     private final String googleApiKey;
     private final GoogleUrlShortenerApiService apiService;
