@@ -1,5 +1,5 @@
 plugins {
-    id "org.springframework.boot" version "2.5.0"
+    id "org.springframework.boot" version "2.4.13"
 }
 
 group 'com.github.simonpercic.responseecho'
@@ -23,7 +23,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 ext.retrofitVersion = '2.9.0'
-ext.springBootVersion = '2.5.0'
+ext.springBootVersion = '2.4.13'
 
 dependencies {
     implementation 'com.github.simonpercic:oklog-shared:2.3.0'
