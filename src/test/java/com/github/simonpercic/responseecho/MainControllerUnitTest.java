@@ -4,7 +4,6 @@ import com.github.simonpercic.oklog.shared.data.BodyState;
 import com.github.simonpercic.oklog.shared.data.HeaderData;
 import com.github.simonpercic.oklog.shared.data.LogData;
 import com.github.simonpercic.responseecho.manager.ResponseManager;
-import com.github.simonpercic.responseecho.manager.analytics.AnalyticsManager;
 import com.github.simonpercic.responseecho.manager.urlshortener.UrlShortenerManager;
 
 import org.junit.Before;
@@ -36,7 +35,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class MainControllerUnitTest {
 
-    @Mock AnalyticsManager analyticsManager;
     @Mock UrlShortenerManager urlShortenerManager;
     @Mock ResponseManager responseManager;
 
@@ -44,7 +42,7 @@ public class MainControllerUnitTest {
 
     @Before
     public void setUp() throws Exception {
-        mainController = new MainController(responseManager, urlShortenerManager, analyticsManager);
+        mainController = new MainController(responseManager, urlShortenerManager);
     }
 
     @Test
@@ -56,8 +54,6 @@ public class MainControllerUnitTest {
 
         String result = mainController.echoResponse(response);
         assertEquals(decodedResponse, result);
-
-        verify(analyticsManager).sendPageView(eq("/re"));
     }
 
     @Test

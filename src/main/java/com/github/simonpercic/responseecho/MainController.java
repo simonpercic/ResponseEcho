@@ -5,7 +5,6 @@ import com.github.simonpercic.oklog.shared.data.BodyState;
 import com.github.simonpercic.oklog.shared.data.LogData;
 import com.github.simonpercic.responseecho.config.Constants;
 import com.github.simonpercic.responseecho.manager.ResponseManager;
-import com.github.simonpercic.responseecho.manager.analytics.AnalyticsManager;
 import com.github.simonpercic.responseecho.manager.urlshortener.UrlShortenerManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,21 +37,16 @@ import okhttp3.HttpUrl;
 
     private final ResponseManager responseManager;
     private final UrlShortenerManager urlShortenerManager;
-    private final AnalyticsManager analyticsManager;
 
-    @Autowired MainController(ResponseManager responseManager, UrlShortenerManager urlShortenerManager,
-            AnalyticsManager analyticsManager) {
+    @Autowired MainController(ResponseManager responseManager, UrlShortenerManager urlShortenerManager) {
         this.responseManager = responseManager;
         this.urlShortenerManager = urlShortenerManager;
-        this.analyticsManager = analyticsManager;
     }
 
     @RequestMapping(value = {RESPONSE_ECHO_LEGACY_URL, RESPONSE_ECHO_URL},
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody String echoResponse(@PathVariable("response") String response) throws IOException {
-        analyticsManager.sendPageView("/" + RESPONSE_ECHO);
-
         return SharedConstants.EMPTY_RESPONSE_BODY.equals(response)
                 ? "No body"
                 : responseManager.decodeBody(response);
