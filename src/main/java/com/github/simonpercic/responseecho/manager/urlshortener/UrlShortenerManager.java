@@ -1,11 +1,11 @@
 package com.github.simonpercic.responseecho.manager.urlshortener;
 
+import com.github.simonpercic.responseecho.manager.log.NoOpLogger;
+import com.github.simonpercic.responseecho.manager.log.SimpleLogger;
 import com.github.simonpercic.responseecho.manager.urlshortener.api.request.UrlRequest;
 import com.github.simonpercic.responseecho.manager.urlshortener.api.response.UrlResponse;
 import com.google.gson.Gson;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -24,10 +24,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Component public class UrlShortenerManager {
 
-    private static final Logger LOGGER = LogManager.getLogger(UrlShortenerManager.class);
-
     private final String googleApiKey;
     private final GoogleUrlShortenerApiService apiService;
+    private final SimpleLogger logger;
 
     @Autowired public UrlShortenerManager(Environment environment) {
         googleApiKey = environment.getProperty("GOOGLE_SHORTENER_API_KEY");
@@ -37,16 +36,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
                 .build()
                 .create(GoogleUrlShortenerApiService.class);
+
+        logger = new NoOpLogger();
     }
 
     public HttpUrl shorten(HttpUrl longUrl) {
         if (longUrl == null) {
-            LOGGER.warn("longUrl is null");
+            logger.warn("longUrl is null");
             return null;
         }
 
         if (StringUtils.isEmpty(googleApiKey)) {
-            LOGGER.warn("googleApiKey is empty");
+            logger.warn("googleApiKey is empty");
             return null;
         }
 
@@ -61,11 +62,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
                 String message = String.format("Failed to get short url for: %s. Response: %s, body: %s",
                         longUrl, result.isSuccessful(), result.body() != null);
 
-                LOGGER.warn(message);
+                logger.warn(message);
             }
         } catch (IOException e) {
             String message = String.format("Failed to get short url for: %s due to: %s", longUrl, e.getMessage());
-            LOGGER.warn(message, e);
+            logger.warn(message, e);
         }
 
         return null;

@@ -43,8 +43,6 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     compile 'commons-io:commons-io:2.5'
-    compile 'org.apache.logging.log4j:log4j-api:2.13.1'
-    compile 'org.apache.logging.log4j:log4j-core:2.13.1'
 
     implementation 'com.squareup.wire:wire-runtime:2.2.0'
 
