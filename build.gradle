@@ -1,15 +1,9 @@
+plugins {
+    id "org.springframework.boot" version "2.6.1"
+}
+
 group 'com.github.simonpercic.responseecho'
 version VERSION_NAME
-
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.2.5.RELEASE")
-    }
-}
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -22,34 +16,34 @@ jar {
 }
 
 repositories {
-    jcenter()
     mavenCentral()
 }
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-ext.retrofitVersion = '2.1.0'
+ext.retrofitVersion = '2.9.0'
+ext.springBootVersion = '2.6.1'
 
 dependencies {
-    compile 'com.github.simonpercic:oklog-shared:2.2.0'
+    implementation 'com.github.simonpercic:oklog-shared:2.3.0'
 
     // Spring Framework
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf:$springBootVersion"
 
-    compile 'org.webjars:bootstrap:3.3.6'
-    compile 'com.google.code.gson:gson:2.7'
-    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    compile 'commons-io:commons-io:2.5'
+    implementation 'org.webjars:bootstrap:3.3.6'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation 'commons-io:commons-io:2.5'
 
     implementation 'com.squareup.wire:wire-runtime:2.2.0'
 
     // Unit test dependencies
-    testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:1.10.19"
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.mockito:mockito-core:1.10.19"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
 }
 
 task stage(type: Copy, dependsOn: [clean, assemble]) {
