@@ -1,0 +1,10 @@
+{
+  "name": "ResponseEcho",
+  "repository": "https://github.com/simonpercic/ResponseEcho",
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-gradle"
+    }
+  ],
+  "stack": "heroku-20"
+}
