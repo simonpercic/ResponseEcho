@@ -22,7 +22,6 @@ jar {
 }
 
 repositories {
-    jcenter()
     mavenCentral()
 }
 
@@ -32,7 +31,7 @@ targetCompatibility = 1.8
 ext.retrofitVersion = '2.1.0'
 
 dependencies {
-    implementation 'com.github.simonpercic:oklog-shared:2.2.0'
+    implementation 'com.github.simonpercic:oklog-shared:2.3.0'
 
     // Spring Framework
     implementation 'org.springframework.boot:spring-boot-starter-web'
